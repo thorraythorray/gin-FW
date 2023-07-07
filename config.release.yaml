@@ -1,0 +1,22 @@
+mysql:
+  host: 192.168.1.99
+  port: 13306
+  user: root
+  passwd: Mjolnir
+  database: assess
+
+redis:
+  host: 192.168.1.99
+  port: 16379
+  passwd: Mjolnir
+  db: 1
+
+zap:
+  level: info
+  logfile: /var/log/go_proj/sys.log
+  format: console
+
+cros:
+  mode: allow-all  # rule
+  whitelist:
+    - 192.168.1.2
