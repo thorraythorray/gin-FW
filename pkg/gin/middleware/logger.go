@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func RequestLoggerMiddleware() gin.HandlerFunc {
+func LoggerRequestMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		startTime := time.Now()
 		c.Next()

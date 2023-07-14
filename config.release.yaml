@@ -20,3 +20,7 @@ cros:
   mode: allow-all  # rule
   whitelist:
     - 192.168.1.2
+
+server:
+  host: 0.0.0.0
+  port: 9009

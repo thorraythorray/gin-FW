@@ -1,24 +1,26 @@
 package initialize
 
 import (
+	"os"
+	"time"
+
 	"github.com/thorraythorray/go-proj/global"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-func ZapInit() {
-	zapConfig := global.ConfigData.Zap
+func newZapEncoderConfig() zapcore.EncoderConfig {
+	var encoderConfig = zap.NewProductionEncoderConfig()
+	encoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout(time.DateTime)
+	return encoderConfig
+}
 
-	// logger, _ := zap.NewProduction()
-
-	encoderConfig := zap.NewProductionEncoderConfig()
-	// 重新选择时间格式函数
-	encoderConfig.EncodeTime = zapcore.RFC3339TimeEncoder
+func ZapFileInit() {
+	var zapConfig = global.ConfigData.Zap
 	logger := zap.New(
 		zapcore.NewCore(
-			// zapcore.NewJSONEncoder(encoderConfig),
-			zapcore.NewConsoleEncoder(encoderConfig),
+			zapcore.NewConsoleEncoder(newZapEncoderConfig()),
 			zapcore.AddSync(&lumberjack.Logger{
 				Filename:   zapConfig.LogFile,
 				MaxSize:    50,  // 指定日志文件大小的阈值，单位为 MB
@@ -31,6 +33,19 @@ func ZapInit() {
 		),
 		zap.AddCaller(),
 	).Sugar()
-	// return logger
+	global.Logger = logger
+}
+
+func ZapConsoleInit() {
+	var zapConfig = global.ConfigData.Zap
+
+	logger := zap.New(
+		zapcore.NewCore(
+			zapcore.NewConsoleEncoder(newZapEncoderConfig()),
+			zapcore.Lock(os.Stdout),
+			zapConfig.MatchLevel(), // 设置日志级别
+		),
+		zap.AddCaller(),
+	).Sugar()
 	global.Logger = logger
 }

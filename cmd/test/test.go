@@ -1,19 +1,44 @@
 package main
 
 import (
-	"go.uber.org/zap"
+	"fmt"
+
+	"github.com/mitchellh/mapstructure"
 )
 
+type Address struct {
+	Location string
+}
+
+type User struct {
+	Name    string
+	Age     int
+	Address `mapstructure:",squash"`
+}
+
+func Test(options ...User) {
+	for _, v := range options {
+		fmt.Println(v)
+	}
+}
+
 func main() {
-	logger, _ := zap.NewProduction()
-	defer logger.Sync()
+	data := map[string]interface{}{
+		"Name":     "John",
+		"Age":      30,
+		"Location": "New York",
+	}
 
-	sugar := logger.Sugar()
+	var user User
 
-	message := "This is a log message"
+	// 使用 mapstructure.Decode() 函数将数据映射到结构体
+	err := mapstructure.Decode(data, &user)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
 
-	sugar.Info(message)
-	sugar.Error(message)
-	sugar.Warn(message)
-	sugar.Debug(message)
+	fmt.Printf("Name: %s\n", user.Name)
+	fmt.Printf("Age: %d\n", user.Age)
+	fmt.Printf("Location: %s\n", user.Location)
 }
