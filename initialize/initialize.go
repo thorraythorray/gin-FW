@@ -7,9 +7,9 @@ import (
 
 func init() {
 	// 初始化运行模式
-	global.Mode, global.ConfigPath = config.ModeObtain()
+	global.Mode, global.ConfFile = config.ModeObtain()
 	Viper()
-	MySQLConnect()
-	RedisConnect()
+	MySQLInit()
+	RedisInit()
 	ZapConsoleInit()
 }

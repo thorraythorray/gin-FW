@@ -24,7 +24,9 @@ func SuccessWithContent(c *gin.Context, data interface{}, msg string) {
 	if data != nil {
 		res.Data = data
 	}
-	if msg != "" {
+	if msg == "" {
+		res.Msg = "ok"
+	} else {
 		res.Msg = msg
 	}
 	HttpResponse(c, http.StatusOK, &res)

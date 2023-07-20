@@ -8,10 +8,10 @@ import (
 )
 
 var (
-	Mode       string
-	ConfigPath string
-	ConfigData *config.ConfigMap
-	Redis      *redis.Client
-	DB         *gorm.DB
-	Logger     *zap.SugaredLogger
+	Mode     string
+	ConfFile string
+	Config   *config.ConfigMap
+	Redis    *redis.Client
+	DB       *gorm.DB
+	Logger   *zap.SugaredLogger
 )

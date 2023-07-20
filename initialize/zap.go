@@ -17,7 +17,7 @@ func newZapEncoderConfig() zapcore.EncoderConfig {
 }
 
 func ZapFileInit() {
-	var zapConfig = global.ConfigData.Zap
+	var zapConfig = global.Config.Zap
 	logger := zap.New(
 		zapcore.NewCore(
 			zapcore.NewConsoleEncoder(newZapEncoderConfig()),
@@ -37,7 +37,7 @@ func ZapFileInit() {
 }
 
 func ZapConsoleInit() {
-	var zapConfig = global.ConfigData.Zap
+	var zapConfig = global.Config.Zap
 
 	logger := zap.New(
 		zapcore.NewCore(

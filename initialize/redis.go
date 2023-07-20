@@ -6,8 +6,8 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-func RedisConnect() {
-	r := global.ConfigData.Redis
+func RedisInit() {
+	r := global.Config.Redis
 	client := redis.NewClient(&redis.Options{
 		Addr:     r.Host,
 		Password: r.Passwd, // no password set

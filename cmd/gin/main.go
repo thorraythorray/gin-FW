@@ -4,18 +4,18 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/thorraythorray/go-proj/gins/middleware"
+	"github.com/thorraythorray/go-proj/gins/service"
 	"github.com/thorraythorray/go-proj/global"
 	_ "github.com/thorraythorray/go-proj/initialize"
-	"github.com/thorraythorray/go-proj/pkg/gin/middleware"
-	"github.com/thorraythorray/go-proj/service"
 )
 
 func main() {
 	var (
 		logger     = global.Logger
-		config     = global.ConfigData
+		config     = global.Config
 		mod        = global.Mode
-		configPath = global.ConfigPath
+		configPath = global.ConfFile
 	)
 
 	// 读取配置参数
@@ -27,6 +27,8 @@ func main() {
 	// use middleware
 	engine.Use(middleware.RecoverMiddleware())
 	// engine.Use(middleware.LoggerRequestMiddleware())
-	serverAddr := fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port)
-	engine.Run(serverAddr)
+	// serverAddr := fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port)
+	// engine.Run(serverAddr)
+	m := config.Mysql
+	fmt.Println(m.Dsn())
 }
