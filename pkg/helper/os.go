@@ -12,7 +12,6 @@ func PathExist(path string) (bool, error) {
 	}
 	if os.IsNotExist(err) {
 		return false, errors.New("文件已存在")
-	} else {
-		return false, err
 	}
+	return false, err
 }

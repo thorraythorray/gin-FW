@@ -5,6 +5,7 @@ import (
 )
 
 type RedisConf struct {
-	internal.GeneralDBConfig `yaml:",inline" mapstructure:",squash"`
-	DB                       int `mapstructure:"db" json:"db" yaml:"db"`
+	internal.GeneralConfig `yaml:",inline" mapstructure:",squash"`
+	Passwd                 string `mapstructure:"passwd" json:"passwd" yaml:"passwd"`
+	DB                     int    `mapstructure:"db" json:"db" yaml:"db"`
 }

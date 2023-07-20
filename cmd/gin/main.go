@@ -15,7 +15,7 @@ func main() {
 		logger     = global.Logger
 		config     = global.Config
 		mod        = global.Mode
-		configPath = global.ConfFile
+		configPath = global.Confile
 	)
 
 	// 读取配置参数

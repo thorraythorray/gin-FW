@@ -1,6 +1,8 @@
 package config
 
+import "github.com/thorraythorray/go-proj/config/internal"
+
 type ServerConfig struct {
-	Host string `mapstructure:"host" json:"host" yaml:"host"`
-	Port int    `mapstructure:"port" json:"port" yaml:"port"`
+	internal.GeneralConfig `yaml:",inline" mapstructure:",squash"`
+	Mode                   string
 }

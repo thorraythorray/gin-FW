@@ -5,8 +5,10 @@ import (
 )
 
 type MySQLConf struct {
-	internal.GeneralDBConfig `yaml:",inline" mapstructure:",squash"`
-	Database                 string `mapstructure:"database" json:"database" yaml:"database"`
+	internal.GeneralConfig `yaml:",inline" mapstructure:",squash"`
+	User                   string `mapstructure:"user" json:"user" yaml:"user"`
+	Passwd                 string `mapstructure:"passwd" json:"passwd" yaml:"passwd"`
+	Database               string `mapstructure:"database" json:"database" yaml:"database"`
 }
 
 func (m *MySQLConf) Dsn() string {

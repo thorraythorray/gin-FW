@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/thorraythorray/go-proj/gins/internal"
 	"github.com/thorraythorray/go-proj/global"
 )
 
@@ -26,12 +27,12 @@ func AllowCros() gin.HandlerFunc {
 }
 
 func CrosMiddleware() gin.HandlerFunc {
-	if global.ConfigData.Cros.Mode == "allow-all" {
+	if global.Config.Cros.Mode == "allow-all" {
 		return AllowCros()
 	}
 	return func(c *gin.Context) {
-		mode := global.ConfigData.Cros.Mode
-		whiteList := global.ConfigData.Cros.Whitelist
+		mode := internal.Config.Cros.Mode
+		whiteList := internal.Config.Cros.Whitelist
 		// var err error
 		if mode != "rule" || whiteList == nil {
 			c.AbortWithError(http.StatusForbidden, errors.New("IP forbidden"))

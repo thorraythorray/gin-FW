@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/gin-gonic/gin v1.9.1
+	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/shirou/gopsutil v3.21.11+incompatible

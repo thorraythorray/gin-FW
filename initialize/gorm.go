@@ -7,13 +7,12 @@ import (
 	"gorm.io/gorm"
 )
 
-func MySQLInit() (*gorm.DB, error) {
+func MySQLInit() {
 	m := global.Config.Mysql
-	db, err := gorm.Open(
-		mysql.Open(m.Dsn()),
-		&gorm.Config{
-			DisableForeignKeyConstraintWhenMigrating: true,
-		},
-	)
-	return db, err
+	db, err := gorm.Open(mysql.Open(m.Dsn()), &gorm.Config{})
+	if err == nil {
+		global.DB = db
+	} else {
+		panic(err)
+	}
 }
