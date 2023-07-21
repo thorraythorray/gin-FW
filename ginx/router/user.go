@@ -5,9 +5,10 @@ import (
 	"github.com/thorraythorray/go-proj/ginx/api"
 )
 
-func AdminRouter(r *gin.RouterGroup) {
+func UserRouter(r *gin.RouterGroup) {
 	userRouter := r.Group("/user")
 	{
 		userRouter.GET("/list", api.UserApiImpl.GetUsers)
+		userRouter.POST("/", api.UserApiImpl.CreateUser)
 	}
 }

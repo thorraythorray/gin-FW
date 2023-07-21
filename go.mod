@@ -3,6 +3,7 @@ module github.com/thorraythorray/go-proj
 go 1.20
 
 require (
+	github.com/flipped-aurora/gin-vue-admin/server v0.0.0-20230721081549-77989e33f9e9
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-redis/redis/v8 v8.11.5

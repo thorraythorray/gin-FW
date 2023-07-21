@@ -1,15 +1,16 @@
-package schema
+package ginx
 
 import (
 	"os"
 
+	"github.com/thorraythorray/go-proj/ginx/schema"
 	"github.com/thorraythorray/go-proj/global"
 )
 
-func ModelMigrate() {
+func MakeMigration() {
 	err := global.DB.AutoMigrate(
 		// admin models
-		User{},
+		schema.User{},
 	)
 	if err != nil {
 		global.Logger.Errorf("DB migrate err:%s", err.Error())

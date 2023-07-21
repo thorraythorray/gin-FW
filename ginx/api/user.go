@@ -2,8 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/thorraythorray/go-proj/ginx"
 	"github.com/thorraythorray/go-proj/ginx/dao"
-	"github.com/thorraythorray/go-proj/ginx/request"
+	"github.com/thorraythorray/go-proj/ginx/request/form"
 	"github.com/thorraythorray/go-proj/ginx/response"
 )
 
@@ -18,12 +19,19 @@ func (u *userApi) GetUsers(c *gin.Context) {
 }
 
 func (u *userApi) CreateUser(c *gin.Context) {
-	var user request.User
+	var user form.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		response.Failed(c, err.Error())
 	}
-	// if hasField(user, "Name")
 
+	var ctx ginx.Context
+	ok, err := ctx.RequestValidate(&user)
+	// fmt.Println(ok, err)
+	if ok {
+		response.Success(c)
+	} else {
+		response.Failed(c, err.Error())
+	}
 }
 
 var UserApiImpl = new(userApi)

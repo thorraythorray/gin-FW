@@ -1,4 +1,4 @@
-package request
+package form
 
 type User struct {
 	Username string `form:"username" binding:"required" json:"username"`
@@ -8,6 +8,8 @@ type User struct {
 	Status   int
 }
 
-func (u *User) Validate() {
-
+func (u *User) Validate() (bool, error) {
+	// fmt.Println("2222")
+	// return false, errors.New("fatal")
+	return true, nil
 }

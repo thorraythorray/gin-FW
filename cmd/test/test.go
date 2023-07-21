@@ -112,11 +112,13 @@ func main() {
 
 	// // 打印删除后的 map
 	// fmt.Println("Updated map:", ages)
-	var a *Person
 
-	a = &Person{Name: "ma"}
+	a := Person{Name: "ma"}
 
 	// a =
-	fmt.Println(&a) // 输出：42，通过指针 a 访问 b 的值
+	// if a.Age {
+	// 	fmt.Println("123")
+	// }
+	// fmt.Println(a.Age) // 输出：42，通过指针 a 访问 b 的值
 
 }

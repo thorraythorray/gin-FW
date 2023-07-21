@@ -19,6 +19,10 @@ func Success(c *gin.Context) {
 	HttpResponse(c, http.StatusOK, "ok")
 }
 
+func Failed(c *gin.Context, msg string) {
+	HttpResponse(c, http.StatusBadRequest, msg)
+}
+
 func SuccessWithContent(c *gin.Context, data interface{}, msg string) {
 	res := Response{}
 	if data != nil {
@@ -29,7 +33,7 @@ func SuccessWithContent(c *gin.Context, data interface{}, msg string) {
 	} else {
 		res.Msg = msg
 	}
-	HttpResponse(c, http.StatusOK, &res)
+	HttpResponse(c, http.StatusOK, res)
 }
 
 func NotFound(c *gin.Context) {
@@ -42,12 +46,6 @@ func AuthForbidden(c *gin.Context) {
 
 func NeedAuthorized(c *gin.Context) {
 	HttpResponse(c, http.StatusUnauthorized, nil)
-}
-
-func Failed(c *gin.Context, msg string) {
-	res := Response{}
-	res.Msg = msg
-	HttpResponse(c, http.StatusBadRequest, &res)
 }
 
 func Conflict(c *gin.Context) {
