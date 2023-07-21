@@ -21,11 +21,11 @@ func Viper() {
 
 	v.OnConfigChange(func(e fsnotify.Event) {
 		fmt.Println("config file changed:", e.Name)
-		if err = v.Unmarshal(global.Config); err != nil {
+		if err = v.Unmarshal(&global.Config); err != nil {
 			fmt.Println(err)
 		}
 	})
-	if err = v.Unmarshal(global.Config); err != nil {
+	if err = v.Unmarshal(&global.Config); err != nil {
 		fmt.Println(err)
 	}
 }

@@ -99,11 +99,10 @@ func PrintPerson(p Person) {
 
 func main() {
 	// // 创建一个 map
-	// ages := map[string]int{
-	// 	"John":  30,
-	// 	"Alice": 25,
-	// 	"Bob":   28,
-	// }
+	type Person struct {
+		Name string
+		Age  int
+	}
 
 	// // 打印原始的 map
 	// fmt.Println("Original map:", ages)
@@ -113,11 +112,11 @@ func main() {
 
 	// // 打印删除后的 map
 	// fmt.Println("Updated map:", ages)
+	var a *Person
 
-	var a *int // 声明指针变量 a，此时 a = nil
-	// b := 42         // 声明整数变量 b，赋值为 42
-	// a = &b          // 将指针 a 指向整数变量 b 的内存地址
-	b = a
-	fmt.Println(*a) // 输出：42，通过指针 a 访问 b 的值
+	a = &Person{Name:"ma"}
+
+	// a = 
+	fmt.Println(&a) // 输出：42，通过指针 a 访问 b 的值
 
 }

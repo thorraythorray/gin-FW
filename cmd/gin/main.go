@@ -11,24 +11,27 @@ import (
 )
 
 func main() {
-	var (
-		logger     = global.Logger
-		config     = global.Config
-		mod        = global.Mode
-		configPath = global.Confile
-	)
+	// var (
+	// 	logger     = global.Logger
+	// 	// config     = global.Config
+	// 	mod        = global.Mode
+	// 	configPath = global.Confile
+	// )
 
-	// 读取配置参数
-	gin.SetMode(mod)
-	logger.Infof("正在使用%s环境,配置文件%s", mod, configPath)
+	// // 读取配置参数
+	gin.SetMode(global.Mode)
+	global.Logger.Infof("正使用%s环境,配置文件%s", global.Mode, global.Confile)
+
 	engine := gin.Default()
 	// register router
 	service.RouterInit(engine)
 	// use middleware
 	engine.Use(middleware.RecoverMiddleware())
 	// engine.Use(middleware.LoggerRequestMiddleware())
+
 	// serverAddr := fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port)
 	// engine.Run(serverAddr)
-	m := config.Mysql
+
+	m := global.Config.Mysql
 	fmt.Println(m.Dsn())
 }
