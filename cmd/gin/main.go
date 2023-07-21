@@ -1,37 +1,28 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
-	"github.com/thorraythorray/go-proj/gins/middleware"
-	"github.com/thorraythorray/go-proj/gins/service"
+	"github.com/thorraythorray/go-proj/ginx/middleware"
+	"github.com/thorraythorray/go-proj/ginx/router"
+	"github.com/thorraythorray/go-proj/ginx/schema"
 	"github.com/thorraythorray/go-proj/global"
 	_ "github.com/thorraythorray/go-proj/initialize"
 )
 
 func main() {
-	// var (
-	// 	logger     = global.Logger
-	// 	// config     = global.Config
-	// 	mod        = global.Mode
-	// 	configPath = global.Confile
-	// )
-
-	// // 读取配置参数
+	// 读取配置参数
 	gin.SetMode(global.Mode)
 	global.Logger.Infof("正使用%s环境,配置文件%s", global.Mode, global.Confile)
 
 	engine := gin.Default()
-	// register router
-	service.RouterInit(engine)
-	// use middleware
+	// register middleware
 	engine.Use(middleware.RecoverMiddleware())
-	// engine.Use(middleware.LoggerRequestMiddleware())
+	// register router
+	router.RouterInit(engine)
+	// migrate
+	schema.ModelMigrate()
 
 	// serverAddr := fmt.Sprintf("%s:%d", config.Server.Host, config.Server.Port)
 	// engine.Run(serverAddr)
 
-	m := global.Config.Mysql
-	fmt.Println(m.Dsn())
 }

@@ -114,9 +114,9 @@ func main() {
 	// fmt.Println("Updated map:", ages)
 	var a *Person
 
-	a = &Person{Name:"ma"}
+	a = &Person{Name: "ma"}
 
-	// a = 
+	// a =
 	fmt.Println(&a) // 输出：42，通过指针 a 访问 b 的值
 
 }

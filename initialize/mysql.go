@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"os"
 	"time"
 
 	"github.com/thorraythorray/go-proj/global"
@@ -16,7 +17,8 @@ func MySQLConnect(dsn string) *gorm.DB {
 		SkipInitializeWithVersion: false,
 	}), &gorm.Config{})
 	if err != nil {
-		panic(err)
+		global.Logger.Errorf("mysql connect err:%s", err.Error())
+		os.Exit(0)
 	}
 	return db
 }
@@ -26,11 +28,12 @@ func MySQLPoolInit() {
 	db := MySQLConnect(m.Dsn())
 	dbPool, err := db.DB()
 	if err != nil {
-		panic(err)
+		global.Logger.Errorf("mysql pool setting err:%s", err.Error())
+		os.Exit(0)
 	}
-	// 暂时用默认
+	// 配置连接池参数
 	// dbPool.SetMaxIdleConns(10)
 	// dbPool.SetMaxOpenConns(100)
 	dbPool.SetConnMaxLifetime(time.Hour)
-	global.DBPool = dbPool
+	global.DB = db
 }

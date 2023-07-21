@@ -1,8 +1,8 @@
-package admin
+package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/thorraythorray/go-proj/gins/service/admin/api"
+	"github.com/thorraythorray/go-proj/ginx/api"
 )
 
 func AdminRouter(r *gin.RouterGroup) {

@@ -2,6 +2,7 @@ package initialize
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
@@ -14,7 +15,8 @@ func Viper() {
 	v.SetConfigType("yaml")
 	err := v.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("fatal error config file: %s", err))
+		global.Logger.Errorf("viper read config err:%s", err.Error())
+		os.Exit(0)
 	}
 
 	v.WatchConfig()

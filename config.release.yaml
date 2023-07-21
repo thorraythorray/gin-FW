@@ -3,7 +3,7 @@ mysql:
   port: 13306
   user: root
   passwd: Mjolnir
-  database: assess
+  database: go
 
 redis:
   host: 192.168.1.99
@@ -13,13 +13,13 @@ redis:
 
 zap:
   level: info
-  logfile: /var/log/go_proj/sys.log
+  logfile: /var/log/go-proj/sys.log
   format: console
 
 cros:
   mode: allow-all  # rule
   whitelist:
-    - 192.168.1.2
+    - 192.168.1.230
 
 server:
   host: 0.0.0.0
