@@ -3,7 +3,7 @@ package dao
 import (
 	"errors"
 
-	"github.com/thorraythorray/go-proj/ginx/schema"
+	"github.com/thorraythorray/go-proj/ginx/schema/model"
 	"github.com/thorraythorray/go-proj/global"
 	"gorm.io/gorm"
 )
@@ -13,7 +13,7 @@ var db = global.DB
 type userDao struct{}
 
 func (dao *userDao) Exist(username, phone, email string) (bool, error) {
-	var user schema.User
+	var user model.User
 	if !errors.Is(
 		db.Where("name = ?", username).
 			Or("phone = ?", phone).
@@ -24,7 +24,7 @@ func (dao *userDao) Exist(username, phone, email string) (bool, error) {
 	return false, nil
 }
 
-func (dao *userDao) Create(u schema.User) (schema.User, error) {
+func (dao *userDao) Create(u model.User) (model.User, error) {
 	isExist, err := dao.Exist(u.Username, u.Phone, u.Email)
 	if isExist {
 		return u, err
@@ -34,19 +34,19 @@ func (dao *userDao) Create(u schema.User) (schema.User, error) {
 	return u, result.Error
 }
 
-func (dao *userDao) UpdateByID(id int, opts schema.User) (schema.User, error) {
-	var upUser schema.User
+func (dao *userDao) UpdateByID(id int, opts model.User) (model.User, error) {
+	var upUser model.User
 	db.Find(&upUser, id)
 	err := db.Model(&upUser).Omit("ID").Updates(opts).Error
 	return upUser, err
 }
 
 func (dao *userDao) DeleteByID(id int) error {
-	return db.Find(&schema.User{}, id).Error
+	return db.Find(&model.User{}, id).Error
 }
 
-func (dao *userDao) List() ([]schema.User, error) {
-	var users []schema.User
+func (dao *userDao) List() ([]model.User, error) {
+	var users []model.User
 	err := db.Order("CreatedAt DESC").Find(&users).Error
 	return users, err
 }

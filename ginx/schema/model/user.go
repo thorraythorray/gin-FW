@@ -1,4 +1,4 @@
-package schema
+package model
 
 import "github.com/thorraythorray/go-proj/pkg/gorm/base"
 
