@@ -1,9 +1,7 @@
 package model
 
-import "github.com/thorraythorray/go-proj/pkg/gorm/base"
-
 type User struct {
-	base.BaseModel
+	BaseModel
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Phone    string `json:"phone"`

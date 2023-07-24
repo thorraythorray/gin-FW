@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/thorraythorray/go-proj/ginx/middleware"
 	"github.com/thorraythorray/go-proj/ginx/router"
+	"github.com/thorraythorray/go-proj/ginx/schema"
 	"github.com/thorraythorray/go-proj/global"
 	_ "github.com/thorraythorray/go-proj/initialize"
 )

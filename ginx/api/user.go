@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/thorraythorray/go-proj/ginx/ctx"
-	"github.com/thorraythorray/go-proj/ginx/ctx/response"
 	"github.com/thorraythorray/go-proj/ginx/dao"
+	"github.com/thorraythorray/go-proj/ginx/runtime"
+	"github.com/thorraythorray/go-proj/ginx/runtime/response"
 	"github.com/thorraythorray/go-proj/ginx/schema/form"
 )
 
@@ -24,8 +24,7 @@ func (u *userApi) CreateUser(c *gin.Context) {
 		response.Failed(c, err.Error())
 	}
 
-	var ctx ctx.Context
-	ok, err := ctx.RequestValidate(&user)
+	ok, err := runtime.Ctx.RequestValidate(&user)
 	// fmt.Println(ok, err)
 	if ok {
 		response.Success(c)
