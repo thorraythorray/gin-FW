@@ -1,4 +1,4 @@
-package runtime
+package common
 
 import "github.com/thorraythorray/go-proj/ginx/schema"
 
