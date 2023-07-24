@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/thorraythorray/go-proj/ginx"
 	"github.com/thorraythorray/go-proj/ginx/middleware"
-	"github.com/thorraythorray/go-proj/ginx/router"
 	"github.com/thorraythorray/go-proj/global"
 	_ "github.com/thorraythorray/go-proj/initialize"
 )
@@ -20,7 +19,7 @@ func main() {
 	// register middleware
 	engine.Use(middleware.RecoverMiddleware())
 	// register router
-	router.RouterInit(engine)
+	ginx.RouterRegister(engine)
 	// migrate
 	ginx.MakeMigration()
 

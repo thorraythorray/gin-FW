@@ -9,7 +9,5 @@ type User struct {
 }
 
 func (u *User) Validate() (bool, error) {
-	// fmt.Println("2222")
-	// return false, errors.New("fatal")
 	return true, nil
 }

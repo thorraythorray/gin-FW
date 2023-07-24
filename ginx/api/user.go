@@ -15,7 +15,7 @@ func (u *userApi) GetUsers(c *gin.Context) {
 	if err != nil {
 		response.Failed(c, err.Error())
 	}
-	response.SuccessWithContent(c, users, "")
+	response.SuccessWithData(c, users)
 }
 
 func (u *userApi) CreateUser(c *gin.Context) {

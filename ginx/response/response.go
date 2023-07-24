@@ -6,48 +6,45 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Response struct {
+type resData struct {
 	Data interface{}
-	Msg  string
 }
 
-func HttpResponse(c *gin.Context, s int, obj interface{}) {
-	c.JSON(s, obj)
+type resMsg struct {
+	Msg string
+}
+
+func responseWithMsg(c *gin.Context, s int, msg string) {
+	res := resMsg{Msg: msg}
+	c.JSON(s, res)
 }
 
 func Success(c *gin.Context) {
-	HttpResponse(c, http.StatusOK, "ok")
+	responseWithMsg(c, http.StatusOK, "ok")
 }
 
-func Failed(c *gin.Context, msg string) {
-	HttpResponse(c, http.StatusBadRequest, msg)
+func SuccessWithData(c *gin.Context, data interface{}) {
+	res := resData{}
+	res.Data = data
+	c.JSON(http.StatusOK, res)
 }
 
-func SuccessWithContent(c *gin.Context, data interface{}, msg string) {
-	res := Response{}
-	if data != nil {
-		res.Data = data
-	}
-	if msg == "" {
-		res.Msg = "ok"
-	} else {
-		res.Msg = msg
-	}
-	HttpResponse(c, http.StatusOK, res)
+func Failed(c *gin.Context, errMsg string) {
+	responseWithMsg(c, http.StatusBadRequest, errMsg)
 }
 
 func NotFound(c *gin.Context) {
-	HttpResponse(c, http.StatusNotFound, nil)
+	responseWithMsg(c, http.StatusNotFound, "目标已存在")
 }
 
 func AuthForbidden(c *gin.Context) {
-	HttpResponse(c, http.StatusForbidden, nil)
+	responseWithMsg(c, http.StatusNotFound, "权限禁止")
 }
 
-func NeedAuthorized(c *gin.Context) {
-	HttpResponse(c, http.StatusUnauthorized, nil)
+func UnAuthorized(c *gin.Context) {
+	responseWithMsg(c, http.StatusNotFound, "登陆过期，请重新登陆")
 }
 
 func Conflict(c *gin.Context) {
-	HttpResponse(c, http.StatusConflict, nil)
+	responseWithMsg(c, http.StatusNotFound, "目标冲突")
 }
