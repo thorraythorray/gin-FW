@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/thorraythorray/go-proj/ginx/common"
-	"github.com/thorraythorray/go-proj/ginx/common/response"
+	"github.com/thorraythorray/go-proj/ginx/api/request"
+	"github.com/thorraythorray/go-proj/ginx/api/response"
 	"github.com/thorraythorray/go-proj/ginx/dao"
 	"github.com/thorraythorray/go-proj/ginx/schema/form"
 )
@@ -11,26 +11,31 @@ import (
 type userApi struct{}
 
 func (u *userApi) GetUsers(c *gin.Context) {
-	users, err := dao.UserDao.List()
-	if err != nil {
-		response.Failed(c, err.Error())
+	var reqForm form.Pagination
+	if err := c.ShouldBindJSON(&reqForm); err != nil {
+		response.RequestFailed(c, err.Error())
 	}
-	response.SuccessWithData(c, users)
+
+	offset, limit := reqForm.PageInfo()
+	users, total, err := dao.UserDao.List(offset, limit)
+	if err != nil {
+		response.ServerFailed(c, err.Error())
+	}
+	res := reqForm.ResponseInfo(users, total)
+	response.SuccessWithData(c, res)
 }
 
 func (u *userApi) CreateUser(c *gin.Context) {
-	var user form.User
-	if err := c.ShouldBindJSON(&user); err != nil {
-		response.Failed(c, err.Error())
+	var reqForm form.User
+	if err := c.ShouldBindJSON(&reqForm); err != nil {
+		response.RequestFailed(c, err.Error())
 	}
 
-	ok, err := common.Ctx.RequestValidate(&user)
-	// fmt.Println(ok, err)
-	if ok {
-		response.Success(c)
-	} else {
-		response.Failed(c, err.Error())
+	err := request.Ctx.RequestValidate(&reqForm)
+	if err != nil {
+		response.ServerFailed(c, err.Error())
 	}
+	response.Success(c)
 }
 
 var UserApiImpl = new(userApi)

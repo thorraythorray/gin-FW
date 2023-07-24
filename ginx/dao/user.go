@@ -45,10 +45,11 @@ func (dao *userDao) DeleteByID(id int) error {
 	return db.Find(&model.User{}, id).Error
 }
 
-func (dao *userDao) List() ([]model.User, error) {
+func (dao *userDao) List(offset, limit int) ([]model.User, uint64, error) {
 	var users []model.User
-	err := db.Order("CreatedAt DESC").Find(&users).Error
-	return users, err
+	err := db.Offset(offset).Limit(limit).Order("CreatedAt DESC").Find(&users).Error
+	count := uint64(db.RowsAffected)
+	return users, count, err
 }
 
 var UserDao = new(userDao)

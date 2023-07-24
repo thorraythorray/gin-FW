@@ -97,28 +97,29 @@ func PrintPerson(p Person) {
 // 	PrintPerson(person)
 // }
 
+type InnerStruct struct {
+	Field int
+}
+
+func (is InnerStruct) Method() {
+	fmt.Println("InnerStruct Method called with Field:", is.Field)
+}
+
+type OuterStruct struct {
+	InnerStruct
+	OuterField string
+}
+
+func (os OuterStruct) Method() {
+	fmt.Println("OuterStruct Method called with OuterField:", os.OuterField)
+}
+
 func main() {
-	// // 创建一个 map
-	type Person struct {
-		Name string
-		Age  int
+	outer := OuterStruct{
+		InnerStruct: InnerStruct{Field: 42},
+		OuterField:  "Hello, World!",
 	}
 
-	// // 打印原始的 map
-	// fmt.Println("Original map:", ages)
-
-	// // 删除键为 "Alice" 的元素
-	// delete(ages, "Alice")
-
-	// // 打印删除后的 map
-	// fmt.Println("Updated map:", ages)
-
-	a := Person{Name: "ma"}
-
-	// a =
-	// if a.Age {
-	// 	fmt.Println("123")
-	// }
-	// fmt.Println(a.Age) // 输出：42，通过指针 a 访问 b 的值
-
+	// Call the Method of OuterStruct, not InnerStruct
+	outer.Method() // Output: OuterStruct Method called with OuterField: Hello, World!
 }

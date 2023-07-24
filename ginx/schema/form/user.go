@@ -8,6 +8,6 @@ type User struct {
 	Status   int
 }
 
-func (u *User) Validate() (bool, error) {
-	return true, nil
+func (u *User) Validate() error {
+	return nil
 }
