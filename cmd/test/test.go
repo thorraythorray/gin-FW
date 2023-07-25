@@ -122,4 +122,8 @@ func main() {
 
 	// Call the Method of OuterStruct, not InnerStruct
 	outer.Method() // Output: OuterStruct Method called with OuterField: Hello, World!
+
+	a := 1001
+	b := 1001
+	fmt.Println(a & b)
 }

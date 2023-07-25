@@ -1,9 +1,9 @@
-package schema
+package util
 
 import (
 	"os"
 
-	"github.com/thorraythorray/go-proj/ginx/schema/model"
+	"github.com/thorraythorray/go-proj/ginx/model"
 	"github.com/thorraythorray/go-proj/global"
 )
 

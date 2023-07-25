@@ -5,7 +5,7 @@ import (
 	"github.com/thorraythorray/go-proj/ginx/api/request"
 	"github.com/thorraythorray/go-proj/ginx/api/response"
 	"github.com/thorraythorray/go-proj/ginx/dao"
-	"github.com/thorraythorray/go-proj/ginx/schema/form"
+	"github.com/thorraythorray/go-proj/ginx/form"
 )
 
 type userApi struct{}
@@ -31,7 +31,7 @@ func (u *userApi) CreateUser(c *gin.Context) {
 		response.RequestFailed(c, err.Error())
 	}
 
-	err := request.Ctx.RequestValidate(&reqForm)
+	err := request.Ctx.ValidateForm(&reqForm)
 	if err != nil {
 		response.ServerFailed(c, err.Error())
 	}

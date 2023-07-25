@@ -8,5 +8,4 @@ func RouterRegister(R *gin.Engine) {
 	apiRouter := R.Group("/v1")
 	// user moudle
 	UserRouter(apiRouter)
-
 }

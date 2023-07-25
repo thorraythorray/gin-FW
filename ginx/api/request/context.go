@@ -1,12 +1,10 @@
 package request
 
-type Former interface {
-	Validate() error
-}
+import "github.com/thorraythorray/go-proj/ginx/form"
 
 type context struct{}
 
-func (cxt *context) RequestValidate(f Former) error {
+func (cxt *context) ValidateForm(f form.FormMethod) error {
 	return f.Validate()
 }
 

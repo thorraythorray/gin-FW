@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/thorraythorray/go-proj/ginx/middleware"
 	"github.com/thorraythorray/go-proj/ginx/router"
-	"github.com/thorraythorray/go-proj/ginx/schema"
+	"github.com/thorraythorray/go-proj/ginx/util"
 	"github.com/thorraythorray/go-proj/global"
 	_ "github.com/thorraythorray/go-proj/initialize"
 )
@@ -22,7 +22,7 @@ func main() {
 	// register router
 	router.RouterRegister(engine)
 	// migrate
-	schema.MakeMigration()
+	util.MakeMigration()
 
 	engine.Run(
 		fmt.Sprintf("%s:%s", global.Config.Server.Host, global.Config.Server.Port),

@@ -32,7 +32,6 @@ func CrosMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		mode := global.Config.Cros.Mode
 		whiteList := global.Config.Cros.Whitelist
-		// var err error
 		if mode != "rule" || whiteList == nil {
 			c.AbortWithError(http.StatusForbidden, errors.New("IP forbidden"))
 		}
