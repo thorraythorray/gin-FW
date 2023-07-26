@@ -9,4 +9,5 @@ func RouterRegister(R *gin.Engine) {
 	apiRouter := R.Group("/v1")
 	// user moudle
 	router.UserRouter(apiRouter)
+	router.JwtRouter(apiRouter)
 }

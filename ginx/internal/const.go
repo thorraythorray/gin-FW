@@ -6,4 +6,7 @@ const (
 	Deleted
 )
 
-const SignKey = "Can i c u"
+const (
+	SignKey    = "Can i c u"
+	ExpireHour = 2
+)

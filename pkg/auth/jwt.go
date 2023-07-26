@@ -13,11 +13,6 @@ const (
 	JwtTokenInvalid  = 403
 )
 
-type JwtVerify struct {
-	Status int
-	Msg    string
-}
-
 type NewJwtClaim struct {
 	UserID string
 	jwt.RegisteredClaims
@@ -25,13 +20,16 @@ type NewJwtClaim struct {
 
 type JWT struct {
 	SigningKey interface{}
+	ExpireHour int
+	CheckUser  string
+	JwtString  string
 }
 
-func (j *JWT) CreateJwtToken(userid string, expireAt int) (string, error) {
+func (j *JWT) Creating() (string, error) {
 	claims := NewJwtClaim{
-		userid,
+		j.CheckUser,
 		jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(expireAt) * time.Hour)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(j.ExpireHour) * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
 		},
@@ -41,9 +39,9 @@ func (j *JWT) CreateJwtToken(userid string, expireAt int) (string, error) {
 	return ss, err
 }
 
-func (j *JWT) ParseJwtToken(tokenString string) (*NewJwtClaim, int, error) {
+func (j *JWT) Parsing() (int, error) {
 	token, err := jwt.ParseWithClaims(
-		tokenString,
+		j.JwtString,
 		&NewJwtClaim{},
 		func(token *jwt.Token) (interface{}, error) {
 			return j.SigningKey, nil
@@ -52,14 +50,18 @@ func (j *JWT) ParseJwtToken(tokenString string) (*NewJwtClaim, int, error) {
 
 	if token.Valid {
 		if claims, ok := token.Claims.(*NewJwtClaim); ok && token.Valid {
-			return claims, JwtTokenInvalid, nil
+			if j.CheckUser == claims.UserID {
+				return 200, err
+			} else {
+				return JwtTokenInvalid, errors.New("无效的token")
+			}
 		}
 	}
 	if errors.Is(err, jwt.ErrTokenMalformed) {
-		return nil, JwtParseError, errors.New("token解析失败")
+		return JwtParseError, errors.New("token解析失败")
 	} else if errors.Is(err, jwt.ErrTokenExpired) || errors.Is(err, jwt.ErrTokenNotValidYet) {
-		return nil, JwtTokenInvalid, errors.New("无效的token")
+		return JwtTokenInvalid, errors.New("无效的token")
 	} else {
-		return nil, JwtClaimsInvalid, err
+		return JwtClaimsInvalid, err
 	}
 }
