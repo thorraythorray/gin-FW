@@ -1,4 +1,4 @@
-package jwt
+package auth
 
 import (
 	"errors"
@@ -19,7 +19,7 @@ type JwtVerify struct {
 }
 
 type NewJwtClaim struct {
-	UserID int
+	UserID string
 	jwt.RegisteredClaims
 }
 
@@ -27,7 +27,7 @@ type JWT struct {
 	SigningKey interface{}
 }
 
-func (j *JWT) CreateToken(userid, expireAt int) (string, error) {
+func (j *JWT) CreateJwtToken(userid string, expireAt int) (string, error) {
 	claims := NewJwtClaim{
 		userid,
 		jwt.RegisteredClaims{
@@ -41,7 +41,7 @@ func (j *JWT) CreateToken(userid, expireAt int) (string, error) {
 	return ss, err
 }
 
-func (j *JWT) ParseToken(tokenString string) (interface{}, error) {
+func (j *JWT) ParseJwtToken(tokenString string) (*NewJwtClaim, int, error) {
 	token, err := jwt.ParseWithClaims(
 		tokenString,
 		&NewJwtClaim{},
@@ -52,14 +52,14 @@ func (j *JWT) ParseToken(tokenString string) (interface{}, error) {
 
 	if token.Valid {
 		if claims, ok := token.Claims.(*NewJwtClaim); ok && token.Valid {
-			return claims, nil
+			return claims, JwtTokenInvalid, nil
 		}
 	}
 	if errors.Is(err, jwt.ErrTokenMalformed) {
-		return JwtParseError, errors.New("token解析失败")
+		return nil, JwtParseError, errors.New("token解析失败")
 	} else if errors.Is(err, jwt.ErrTokenExpired) || errors.Is(err, jwt.ErrTokenNotValidYet) {
-		return JwtTokenInvalid, errors.New("无效的token")
+		return nil, JwtTokenInvalid, errors.New("无效的token")
 	} else {
-		return JwtClaimsInvalid, err
+		return nil, JwtClaimsInvalid, err
 	}
 }

@@ -2,10 +2,10 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/thorraythorray/go-proj/ginx/api/request"
-	"github.com/thorraythorray/go-proj/ginx/api/response"
 	"github.com/thorraythorray/go-proj/ginx/dao"
 	"github.com/thorraythorray/go-proj/ginx/form"
+	"github.com/thorraythorray/go-proj/ginx/util/request"
+	"github.com/thorraythorray/go-proj/ginx/util/response"
 )
 
 type userApi struct{}

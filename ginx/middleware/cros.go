@@ -8,12 +8,12 @@ import (
 	"github.com/thorraythorray/go-proj/global"
 )
 
-func AllowCros() gin.HandlerFunc {
+func allowCros() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Headers", "Content-Type,AccessToken,X-CSRF-Token, Authorization, Token,X-Token,X-User-Id")
+		c.Header("Access-Control-Allow-Headers", "*")
 		c.Header("Access-Control-Allow-Methods", "POST,GET,OPTIONS,DELETE,PUT")
-		c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type, New-Token, New-Expires-At")
+		c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type")
 		c.Header("Access-Control-Allow-Credentials", "true")
 
 		// 放行所有OPTIONS方法
@@ -27,7 +27,7 @@ func AllowCros() gin.HandlerFunc {
 
 func CrosMiddleware() gin.HandlerFunc {
 	if global.Config.Cros.Mode == "allow-all" {
-		return AllowCros()
+		return allowCros()
 	}
 	return func(c *gin.Context) {
 		mode := global.Config.Cros.Mode
@@ -48,9 +48,8 @@ func CrosMiddleware() gin.HandlerFunc {
 		checkFlag := CheckInWhitelist(origin, whiteList)
 		if checkFlag {
 			c.Header("Access-Control-Allow-Origin", origin)
-			c.Header("Access-Control-Allow-Headers", "Content-Type,AccessToken,X-CSRF-Token, Authorization, Token,X-Token,X-User-Id")
 			c.Header("Access-Control-Allow-Methods", "POST,GET,OPTIONS,DELETE,PUT")
-			c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type, New-Token, New-Expires-At")
+			c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type")
 			c.Header("Access-Control-Allow-Credentials", "true")
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)

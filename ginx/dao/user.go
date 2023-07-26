@@ -3,7 +3,7 @@ package dao
 import (
 	"errors"
 
-	"github.com/thorraythorray/go-proj/ginx/schema/model"
+	"github.com/thorraythorray/go-proj/ginx/model"
 	"github.com/thorraythorray/go-proj/global"
 	"gorm.io/gorm"
 )

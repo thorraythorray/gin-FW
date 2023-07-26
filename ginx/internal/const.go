@@ -5,3 +5,5 @@ const (
 	Disable
 	Deleted
 )
+
+const SignKey = "Can i c u"
