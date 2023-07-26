@@ -24,14 +24,14 @@ func (dao *userDao) Exist(username, phone, email string) (bool, error) {
 	return false, nil
 }
 
-func (dao *userDao) Create(u model.User) (model.User, error) {
+func (dao *userDao) Create(u *model.User) error {
 	isExist, err := dao.Exist(u.Username, u.Phone, u.Email)
 	if isExist {
-		return u, err
+		return err
 	}
 	// 修改user成员内容格式
 	result := db.Create(&u)
-	return u, result.Error
+	return result.Error
 }
 
 func (dao *userDao) UpdateByID(id int, opts model.User) (model.User, error) {

@@ -114,16 +114,26 @@ func (os OuterStruct) Method() {
 	fmt.Println("OuterStruct Method called with OuterField:", os.OuterField)
 }
 
+type Person1 struct {
+	Name string
+	Age  int
+}
+
+type Person2 struct {
+	Name string
+	Age  int
+	Sex  string
+}
+
 func main() {
-	outer := OuterStruct{
-		InnerStruct: InnerStruct{Field: 42},
-		OuterField:  "Hello, World!",
-	}
+	// 定义两个结构体变量
+	person1 := Person1{Name: "Alice", Age: 30}
+	person2 := Person2{}
 
-	// Call the Method of OuterStruct, not InnerStruct
-	outer.Method() // Output: OuterStruct Method called with OuterField: Hello, World!
+	// 快速赋值：将 person1 的字段值复制给 person2
+	person2 = person1
 
-	a := 1001
-	b := 1001
-	fmt.Println(a & b)
+	// 输出两个结构体的字段值
+	fmt.Println("Person 1:", person1) // 输出: Person 1: {Alice 30}
+	fmt.Println("Person 2:", person2) // 输出: Person 2: {Alice 30}
 }

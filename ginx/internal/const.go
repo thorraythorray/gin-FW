@@ -1,7 +1,7 @@
 package internal
 
 const (
-	Active = iota - 1
+	Active = iota
 	Disable
 	Deleted
 )

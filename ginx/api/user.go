@@ -4,6 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/thorraythorray/go-proj/ginx/dao"
 	"github.com/thorraythorray/go-proj/ginx/form"
+	"github.com/thorraythorray/go-proj/ginx/internal"
+	"github.com/thorraythorray/go-proj/ginx/model"
 	"github.com/thorraythorray/go-proj/ginx/util/request"
 	"github.com/thorraythorray/go-proj/ginx/util/response"
 )
@@ -30,12 +32,22 @@ func (u *userApi) CreateUser(c *gin.Context) {
 	if err := c.ShouldBindJSON(&reqForm); err != nil {
 		response.RequestFailed(c, err.Error())
 	}
-
 	err := request.Ctx.ValidateForm(&reqForm)
 	if err != nil {
 		response.ServerFailed(c, err.Error())
 	}
-	response.Success(c)
+	newUser := model.User{
+		Username: reqForm.Username,
+		Password: reqForm.Password,
+		Phone:    reqForm.Phone,
+		Email:    reqForm.Email,
+		Status:   uint8(internal.Active),
+	}
+	err = dao.UserDao.Create(&newUser)
+	if err != nil {
+		response.ServerFailed(c, err.Error())
+	}
+	response.SuccessWithData(c, newUser)
 }
 
 var UserApiImpl = new(userApi)

@@ -5,7 +5,6 @@ type User struct {
 	Password string `form:"password" binding:"required" json:"password"`
 	Phone    string `form:"phone" json:"phone"`
 	Email    string `form:"email" json:"email"`
-	Status   int
 }
 
 func (u *User) Validate() error {
