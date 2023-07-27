@@ -13,7 +13,7 @@ func allowCros() gin.HandlerFunc {
 		c.Header("Access-Control-Allow-Origin", "*")
 		c.Header("Access-Control-Allow-Headers", "*")
 		c.Header("Access-Control-Allow-Methods", "POST,GET,OPTIONS,DELETE,PUT")
-		c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type, X-User, X-Token")
+		c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type, GToken")
 		c.Header("Access-Control-Allow-Credentials", "true")
 
 		// 放行所有OPTIONS方法
@@ -49,7 +49,7 @@ func CrosMiddleware() gin.HandlerFunc {
 		if checkFlag {
 			c.Header("Access-Control-Allow-Origin", origin)
 			c.Header("Access-Control-Allow-Methods", "POST,GET,OPTIONS,DELETE,PUT")
-			c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type, X-User, X-Token")
+			c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type, GToken")
 			c.Header("Access-Control-Allow-Credentials", "true")
 		} else {
 			c.AbortWithStatus(http.StatusForbidden)

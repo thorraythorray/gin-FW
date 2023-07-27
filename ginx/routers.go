@@ -7,6 +7,5 @@ import (
 
 func RouterRegister(R *gin.Engine) {
 	apiRouter := R.Group("/v1")
-
 	router.AdminRouter(apiRouter)
 }

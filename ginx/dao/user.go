@@ -8,47 +8,38 @@ import (
 	"gorm.io/gorm"
 )
 
-var db = global.DB
-
 type userDao struct{}
 
-func (dao *userDao) Exist(username, phone, email string) (bool, error) {
+func (dao *userDao) Exist(username, phone, email string) bool {
 	var user model.User
-	if !errors.Is(
-		db.Where("name = ?", username).
-			Or("phone = ?", phone).
-			Or("email = ?", email).
-			First(&user).Error, gorm.ErrRecordNotFound) {
-		return true, errors.New("record exist")
-	}
-	return false, nil
+	return !errors.Is(global.DB.Where("username = ?", username).Or("phone = ?", phone).Or("email = ?", email).First(&user).Error, gorm.ErrRecordNotFound)
 }
 
 func (dao *userDao) Create(u *model.User) error {
-	isExist, err := dao.Exist(u.Username, u.Phone, u.Email)
+	isExist := dao.Exist(u.Username, u.Phone, u.Email)
 	if isExist {
-		return err
+		return errors.New("记录已存在")
 	}
 	// 修改user成员内容格式
-	result := db.Create(&u)
+	result := global.DB.Create(u)
 	return result.Error
 }
 
 func (dao *userDao) UpdateByID(id int, opts model.User) (model.User, error) {
 	var upUser model.User
-	db.Find(&upUser, id)
-	err := db.Model(&upUser).Omit("ID").Updates(opts).Error
+	global.DB.Find(&upUser, id)
+	err := global.DB.Model(&upUser).Omit("ID").Updates(opts).Error
 	return upUser, err
 }
 
 func (dao *userDao) DeleteByID(id int) error {
-	return db.Find(&model.User{}, id).Error
+	return global.DB.Find(&model.User{}, id).Error
 }
 
 func (dao *userDao) List(offset, limit int) ([]model.User, uint64, error) {
 	var users []model.User
-	err := db.Offset(offset).Limit(limit).Order("CreatedAt DESC").Find(&users).Error
-	count := uint64(db.RowsAffected)
+	err := global.DB.Offset(offset).Limit(limit).Order("CreatedAt DESC").Find(&users).Error
+	count := uint64(global.DB.RowsAffected)
 	return users, count, err
 }
 

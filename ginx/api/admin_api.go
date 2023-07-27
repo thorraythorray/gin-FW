@@ -6,14 +6,14 @@ import (
 	"github.com/thorraythorray/go-proj/ginx/form"
 	"github.com/thorraythorray/go-proj/ginx/internal"
 	"github.com/thorraythorray/go-proj/ginx/model"
-	"github.com/thorraythorray/go-proj/ginx/util/request"
 	"github.com/thorraythorray/go-proj/ginx/util/response"
 	"github.com/thorraythorray/go-proj/pkg/auth"
+	"github.com/thorraythorray/go-proj/pkg/validator"
 )
 
 type adminApi struct{}
 
-func (u *adminApi) ObtainToken(c *gin.Context) {
+func (u *adminApi) GetToken(c *gin.Context) {
 	jwt := auth.JWT{
 		SigningKey: internal.SignKey,
 		CheckUser:  c.Request.Header.Get("X-User"),
@@ -24,6 +24,32 @@ func (u *adminApi) ObtainToken(c *gin.Context) {
 		response.ServerFailed(c, err.Error())
 	}
 	response.SuccessWithData(c, tokenstring)
+}
+
+func (u *adminApi) Register(c *gin.Context) {
+	var reqForm form.Register
+	if err := c.ShouldBindJSON(&reqForm); err != nil {
+		response.RequestFailed(c, err.Error())
+		return
+	}
+	errMsg := validator.Validate(reqForm)
+	if errMsg != "" {
+		response.RequestFailed(c, errMsg)
+		return
+	}
+	newUser := model.User{
+		Username: reqForm.Username,
+		Password: reqForm.Password,
+		Phone:    reqForm.Phone,
+		Email:    reqForm.Email,
+		Status:   uint8(internal.Active),
+	}
+	err := dao.UserDao.Create(&newUser)
+	if err != nil {
+		response.ServerFailed(c, err.Error())
+	} else {
+		response.SuccessWithData(c, newUser)
+	}
 }
 
 func (u *adminApi) GetUsers(c *gin.Context) {
@@ -39,29 +65,6 @@ func (u *adminApi) GetUsers(c *gin.Context) {
 	}
 	res := reqForm.ResponseInfo(users, total)
 	response.SuccessWithData(c, res)
-}
-
-func (u *adminApi) CreateUser(c *gin.Context) {
-	var reqForm form.User
-	if err := c.ShouldBindJSON(&reqForm); err != nil {
-		response.RequestFailed(c, err.Error())
-	}
-	err := request.Ctx.ValidateForm(&reqForm)
-	if err != nil {
-		response.ServerFailed(c, err.Error())
-	}
-	newUser := model.User{
-		Username: reqForm.Username,
-		Password: reqForm.Password,
-		Phone:    reqForm.Phone,
-		Email:    reqForm.Email,
-		Status:   uint8(internal.Active),
-	}
-	err = dao.UserDao.Create(&newUser)
-	if err != nil {
-		response.ServerFailed(c, err.Error())
-	}
-	response.SuccessWithData(c, newUser)
 }
 
 var AdminApiImpl = new(adminApi)

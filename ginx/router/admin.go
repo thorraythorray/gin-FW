@@ -8,8 +8,7 @@ import (
 func AdminRouter(r *gin.RouterGroup) {
 	adminRouter := r.Group("/")
 
-	adminRouter.POST("/token/obtain", api.AdminApiImpl.ObtainToken)
-
-	adminRouter.GET("/user/list", api.AdminApiImpl.GetUsers)
-	adminRouter.POST("/user/create", api.AdminApiImpl.CreateUser)
+	adminRouter.POST("/token/obtain", api.AdminApiImpl.GetToken)
+	adminRouter.GET("/users", api.AdminApiImpl.GetUsers)
+	adminRouter.POST("/user/register", api.AdminApiImpl.Register)
 }

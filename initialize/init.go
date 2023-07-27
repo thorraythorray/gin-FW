@@ -9,7 +9,7 @@ import (
 )
 
 func modeObtain() {
-	flag.StringVar(&global.Mode, "m", "release", "choose mod in [debug release test]")
+	flag.StringVar(&global.Mode, "m", "debug", "choose mod in [debug release test]")
 	flag.Parse()
 
 	global.Confile = "config." + global.Mode + ".yaml"

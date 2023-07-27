@@ -6,9 +6,10 @@ import (
 )
 
 func InitMoudles(R *gin.Engine) {
+	R.Use(
+		// middleware.RecoverMiddleware(),
+		middleware.JwtAuthMiddleware(),
+	)
 	RouterRegister(R)
-
-	R.Use(middleware.RecoverMiddleware())
-
 	MakeMigration()
 }
