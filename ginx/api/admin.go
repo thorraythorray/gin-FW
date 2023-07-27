@@ -8,11 +8,25 @@ import (
 	"github.com/thorraythorray/go-proj/ginx/model"
 	"github.com/thorraythorray/go-proj/ginx/util/request"
 	"github.com/thorraythorray/go-proj/ginx/util/response"
+	"github.com/thorraythorray/go-proj/pkg/auth"
 )
 
-type userApi struct{}
+type adminApi struct{}
 
-func (u *userApi) GetUsers(c *gin.Context) {
+func (u *adminApi) ObtainToken(c *gin.Context) {
+	jwt := auth.JWT{
+		SigningKey: internal.SignKey,
+		CheckUser:  c.Request.Header.Get("X-User"),
+		ExpireHour: internal.ExpireHour,
+	}
+	tokenstring, err := auth.AuthorizeImpl.Obtain(&jwt)
+	if err != nil {
+		response.ServerFailed(c, err.Error())
+	}
+	response.SuccessWithData(c, tokenstring)
+}
+
+func (u *adminApi) GetUsers(c *gin.Context) {
 	var reqForm form.Pagination
 	if err := c.ShouldBindJSON(&reqForm); err != nil {
 		response.RequestFailed(c, err.Error())
@@ -27,7 +41,7 @@ func (u *userApi) GetUsers(c *gin.Context) {
 	response.SuccessWithData(c, res)
 }
 
-func (u *userApi) CreateUser(c *gin.Context) {
+func (u *adminApi) CreateUser(c *gin.Context) {
 	var reqForm form.User
 	if err := c.ShouldBindJSON(&reqForm); err != nil {
 		response.RequestFailed(c, err.Error())
@@ -50,4 +64,4 @@ func (u *userApi) CreateUser(c *gin.Context) {
 	response.SuccessWithData(c, newUser)
 }
 
-var UserApiImpl = new(userApi)
+var AdminApiImpl = new(adminApi)
