@@ -1,18 +1,18 @@
 package auth
 
-type Authorizer interface {
-	Creating() (string, error)
-	Parsing() (int, error)
+type AuthorizeTokner interface {
+	Obtaining() (string, error)
+	Authenticating() (int, error)
 }
 
 type authorizeImpl struct{}
 
-func (auth *authorizeImpl) Obtain(a Authorizer) (string, error) {
-	return a.Creating()
+func (auth *authorizeImpl) Obtain(a AuthorizeTokner) (string, error) {
+	return a.Obtaining()
 }
 
-func (auth *authorizeImpl) Authenticate(a Authorizer) (int, error) {
-	return a.Parsing()
+func (auth *authorizeImpl) Authenticate(a AuthorizeTokner) (int, error) {
+	return a.Authenticating()
 }
 
 var AuthorizeImpl = new(authorizeImpl)

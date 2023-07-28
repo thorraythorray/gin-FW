@@ -25,8 +25,7 @@ func JwtAuthMiddleware() gin.HandlerFunc {
 				c.AbortWithError(http.StatusBadRequest, errors.New("缺少X-Token或X-User等参数"))
 			}
 			jwt := auth.JWT{
-				SigningKey: internal.SignKey,
-				CheckUser:  reqUser,
+				SigningKey: internal.JwtSignKey,
 				JwtString:  tokenstring,
 			}
 			status, err := auth.AuthorizeImpl.Authenticate(&jwt)

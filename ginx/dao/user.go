@@ -12,7 +12,10 @@ type userDao struct{}
 
 func (dao *userDao) Exist(username, phone, email string) bool {
 	var user model.User
-	return !errors.Is(global.DB.Where("username = ?", username).Or("phone = ?", phone).Or("email = ?", email).First(&user).Error, gorm.ErrRecordNotFound)
+	return !errors.Is(
+		global.DB.Where("username = ?", username).Or("phone = ?", phone).Or("email = ?", email).First(&user).Error,
+		gorm.ErrRecordNotFound,
+	)
 }
 
 func (dao *userDao) Create(u *model.User) error {

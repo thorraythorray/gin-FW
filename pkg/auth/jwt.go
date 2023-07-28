@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -16,13 +17,13 @@ type NewJwtClaim struct {
 type JWT struct {
 	SigningKey interface{}
 	ExpireHour int
-	CheckUser  string
+	Identity   string
 	JwtString  string
 }
 
-func (j *JWT) Creating() (string, error) {
+func (j *JWT) Obtaining() (string, error) {
 	claims := NewJwtClaim{
-		j.CheckUser,
+		j.Identity,
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(j.ExpireHour) * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -34,7 +35,7 @@ func (j *JWT) Creating() (string, error) {
 	return ss, err
 }
 
-func (j *JWT) Parsing() (int, error) {
+func (j *JWT) Authenticating() (int, error) {
 	token, err := jwt.ParseWithClaims(
 		j.JwtString,
 		&NewJwtClaim{},
@@ -45,11 +46,12 @@ func (j *JWT) Parsing() (int, error) {
 
 	if token.Valid {
 		if claims, ok := token.Claims.(*NewJwtClaim); ok && token.Valid {
-			if j.CheckUser == claims.UserID {
-				return 200, err
-			} else {
-				return http.StatusForbidden, errors.New("无效的token")
-			}
+			// if j.CheckUser == claims.UserID {
+			// 	return 200, err
+			// } else {
+			// 	return http.StatusForbidden, errors.New("无效的token")
+			// }
+			fmt.Println(claims.ID)
 		}
 	}
 	if errors.Is(err, jwt.ErrTokenMalformed) {
