@@ -1,3 +1,5 @@
-1. form的业务校验非validator，建议使用自定义
-2. reponse使用结构体方法代替函数
-3. 对dao方法的基本类方法抽象
+# TODO List for Project
+- [ ] 使用migrate工具对数据库做自动化的迁移管理
+- [ ] 考虑form的业务校验方式，非validator格式检验
+- [ ] reponse使用结构体方法代替函数
+- [ ] 对dao方法的基本方法进行抽象

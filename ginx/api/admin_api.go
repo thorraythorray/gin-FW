@@ -2,11 +2,11 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/thorraythorray/go-proj/ginx/api/response"
 	"github.com/thorraythorray/go-proj/ginx/dao"
 	"github.com/thorraythorray/go-proj/ginx/form"
 	"github.com/thorraythorray/go-proj/ginx/internal"
 	"github.com/thorraythorray/go-proj/ginx/model"
-	"github.com/thorraythorray/go-proj/ginx/util/response"
 	"github.com/thorraythorray/go-proj/pkg/validator"
 )
 

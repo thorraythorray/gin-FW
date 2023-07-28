@@ -10,7 +10,7 @@ import (
 func MakeMigration() {
 	err := global.DB.AutoMigrate(
 		// admin models
-		model.User{},
+		&model.User{},
 	)
 	if err != nil {
 		global.Logger.Errorf("DB migrate err:%s", err.Error())
