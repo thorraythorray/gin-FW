@@ -32,7 +32,7 @@ func AuthForbidden(c *gin.Context) {
 }
 
 func UnAuthorized(c *gin.Context) {
-	ResponseWithMsg(c, http.StatusNotFound, "登陆过期，请重新登陆")
+	ResponseWithMsg(c, http.StatusNotFound, "用户不存在")
 }
 
 func Conflict(c *gin.Context) {

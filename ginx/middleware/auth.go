@@ -19,16 +19,14 @@ func JwtAuthMiddleware() gin.HandlerFunc {
 			global.Logger.Infof("exempt jwt...")
 			c.Next()
 		} else {
-			reqUser := c.Request.Header.Get("X-User")
 			tokenstring := c.Request.Header.Get("GToken")
-			if reqUser == "" || tokenstring == "" {
-				c.AbortWithError(http.StatusBadRequest, errors.New("缺少X-Token或X-User等参数"))
+			if tokenstring == "" {
+				c.AbortWithError(http.StatusBadRequest, errors.New("缺少GToken认证参数"))
 			}
 			jwt := auth.JWT{
 				SigningKey: internal.JwtSignKey,
-				JwtString:  tokenstring,
 			}
-			status, err := auth.AuthorizeImpl.Authenticate(&jwt)
+			status, err := auth.AuthorizeImpl.Authenticate(&jwt, tokenstring)
 			if err == nil {
 				c.Next()
 			}

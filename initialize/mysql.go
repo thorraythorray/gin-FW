@@ -8,6 +8,7 @@ import (
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func MySQLConnect(dsn string) *gorm.DB {
@@ -15,7 +16,9 @@ func MySQLConnect(dsn string) *gorm.DB {
 		DSN:                       dsn,
 		DefaultStringSize:         64,
 		SkipInitializeWithVersion: false,
-	}), &gorm.Config{})
+	}), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		global.Logger.Errorf("mysql connect err:%s", err.Error())
 		os.Exit(0)

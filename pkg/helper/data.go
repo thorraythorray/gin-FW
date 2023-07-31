@@ -1,6 +1,11 @@
 package helper
 
-import "reflect"
+import (
+	"reflect"
+	"strings"
+
+	"github.com/google/uuid"
+)
 
 func StructToMap(obj interface{}) map[string]interface{} {
 	objType := reflect.TypeOf(obj)
@@ -18,4 +23,11 @@ func StructToMap(obj interface{}) map[string]interface{} {
 	}
 
 	return data
+}
+
+func UuidString() string {
+	newUUID := uuid.New().String()
+	uuidList := strings.Split(newUUID, "-")
+	joinedStr := strings.Join(uuidList, "")
+	return joinedStr
 }

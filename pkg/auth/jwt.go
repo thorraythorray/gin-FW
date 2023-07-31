@@ -10,20 +10,18 @@ import (
 )
 
 type NewJwtClaim struct {
-	UserID string
+	User string
 	jwt.RegisteredClaims
 }
 
 type JWT struct {
 	SigningKey interface{}
 	ExpireHour int
-	Identity   string
-	JwtString  string
 }
 
-func (j *JWT) Obtaining() (string, error) {
+func (j *JWT) Obtaining(u string) (string, error) {
 	claims := NewJwtClaim{
-		j.Identity,
+		u,
 		jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Duration(j.ExpireHour) * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
@@ -35,9 +33,9 @@ func (j *JWT) Obtaining() (string, error) {
 	return ss, err
 }
 
-func (j *JWT) Authenticating() (int, error) {
+func (j *JWT) Authenticating(s string) (int, error) {
 	token, err := jwt.ParseWithClaims(
-		j.JwtString,
+		s,
 		&NewJwtClaim{},
 		func(token *jwt.Token) (interface{}, error) {
 			return j.SigningKey, nil
@@ -46,12 +44,8 @@ func (j *JWT) Authenticating() (int, error) {
 
 	if token.Valid {
 		if claims, ok := token.Claims.(*NewJwtClaim); ok && token.Valid {
-			// if j.CheckUser == claims.UserID {
-			// 	return 200, err
-			// } else {
-			// 	return http.StatusForbidden, errors.New("无效的token")
-			// }
-			fmt.Println(claims.ID)
+			// todo: query in db to validate user
+			fmt.Printf("jwt check user:%s\n", claims.User)
 		}
 	}
 	if errors.Is(err, jwt.ErrTokenMalformed) {

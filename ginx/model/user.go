@@ -7,5 +7,5 @@ type User struct {
 	Phone    string `json:"phone"`
 	Email    string `json:"email"`
 	Status   uint8
-	Identity string `json:"identity" gorm:"not null;size:128"`
+	Identity string `json:"identity" gorm:"not null"`
 }

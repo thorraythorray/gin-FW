@@ -1,18 +1,18 @@
 package auth
 
 type AuthorizeTokner interface {
-	Obtaining() (string, error)
-	Authenticating() (int, error)
+	Obtaining(string) (string, error)
+	Authenticating(string) (int, error)
 }
 
 type authorizeImpl struct{}
 
-func (auth *authorizeImpl) Obtain(a AuthorizeTokner) (string, error) {
-	return a.Obtaining()
+func (auth *authorizeImpl) Obtain(a AuthorizeTokner, u string) (string, error) {
+	return a.Obtaining(u)
 }
 
-func (auth *authorizeImpl) Authenticate(a AuthorizeTokner) (int, error) {
-	return a.Authenticating()
+func (auth *authorizeImpl) Authenticate(a AuthorizeTokner, j string) (int, error) {
+	return a.Authenticating(j)
 }
 
 var AuthorizeImpl = new(authorizeImpl)
