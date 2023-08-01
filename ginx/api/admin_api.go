@@ -21,7 +21,7 @@ type adminApi struct{}
 
 func (u *adminApi) Register(c *gin.Context) {
 	var register form.Register
-	request.FieldsValidate(c, &register)
+	request.Validate(c, &register)
 
 	newUser := model.User{
 		Username: register.Username,
@@ -41,7 +41,7 @@ func (u *adminApi) Register(c *gin.Context) {
 
 func (u *adminApi) Login(c *gin.Context) {
 	var login form.Login
-	request.FieldsValidate(c, &login)
+	request.Validate(c, &login)
 
 	var user model.User
 	isExist := !errors.Is(
@@ -67,7 +67,7 @@ func (u *adminApi) Login(c *gin.Context) {
 
 func (u *adminApi) GetUsers(c *gin.Context) {
 	var pag form.Pagination
-	request.FieldsValidate(c, &pag)
+	request.Validate(c, &pag)
 
 	offset, limit := pag.PageInfo()
 	users, total, err := dao.UserDao.List(offset, limit)
