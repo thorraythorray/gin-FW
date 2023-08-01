@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/thorraythorray/go-proj/ginx/api/request"
 	"github.com/thorraythorray/go-proj/ginx/api/response"
 	"github.com/thorraythorray/go-proj/ginx/dao"
 	"github.com/thorraythorray/go-proj/ginx/form"
@@ -13,28 +14,20 @@ import (
 	"github.com/thorraythorray/go-proj/global"
 	"github.com/thorraythorray/go-proj/pkg/auth"
 	"github.com/thorraythorray/go-proj/pkg/helper"
-	"github.com/thorraythorray/go-proj/pkg/validator"
 	"gorm.io/gorm"
 )
 
 type adminApi struct{}
 
 func (u *adminApi) Register(c *gin.Context) {
-	var reqForm form.Register
-	if err := c.ShouldBindJSON(&reqForm); err != nil {
-		response.RequestFailed(c, err.Error())
-		return
-	}
-	errMsg := validator.Validate(reqForm)
-	if errMsg != "" {
-		response.RequestFailed(c, errMsg)
-		return
-	}
+	var register form.Register
+	request.FieldsValidate(c, &register)
+
 	newUser := model.User{
-		Username: reqForm.Username,
-		Password: reqForm.Password,
-		Phone:    reqForm.Phone,
-		Email:    reqForm.Email,
+		Username: register.Username,
+		Password: register.Password,
+		Phone:    register.Phone,
+		Email:    register.Email,
 		Status:   uint8(internal.Active),
 		Identity: helper.UuidString(),
 	}
@@ -47,51 +40,41 @@ func (u *adminApi) Register(c *gin.Context) {
 }
 
 func (u *adminApi) Login(c *gin.Context) {
-	var loginForm form.Login
-	if err := c.ShouldBindJSON(&loginForm); err != nil {
-		response.RequestFailed(c, err.Error())
-		return
-	}
-	errMsg := validator.Validate(loginForm)
-	if errMsg != "" {
-		response.RequestFailed(c, errMsg)
-		return
-	}
+	var login form.Login
+	request.FieldsValidate(c, &login)
+
 	var user model.User
 	isExist := !errors.Is(
-		global.DB.Where("username = ? AND password = ?", loginForm.Username, loginForm.Password).First(&user).Error,
+		global.DB.Where("username = ? AND password = ?", login.Username, login.Password).First(&user).Error,
 		gorm.ErrRecordNotFound,
 	)
 	if !isExist {
-		response.UnAuthorized(c)
+		response.NotFound(c)
 	} else {
 		jwt := auth.JWT{
 			SigningKey: internal.JwtSignKey,
 			ExpireHour: internal.JwtExpireHour,
 		}
 		userIdentify := fmt.Sprintf("%d", user.ID)
-		token, err := auth.AuthorizeImpl.Obtain(&jwt, userIdentify)
-		if err != nil {
+		token, err := auth.AuthorizerImpl.Obtain(&jwt, userIdentify)
+		if err == nil {
+			response.SuccessWithData(c, token)
+		} else {
 			response.ServerFailed(c, err.Error())
-			return
 		}
-		response.SuccessWithData(c, token)
 	}
 }
 
 func (u *adminApi) GetUsers(c *gin.Context) {
-	var reqForm form.Pagination
-	if err := c.ShouldBindJSON(&reqForm); err != nil {
-		response.RequestFailed(c, err.Error())
-		return
-	}
+	var pag form.Pagination
+	request.FieldsValidate(c, &pag)
 
-	offset, limit := reqForm.PageInfo()
+	offset, limit := pag.PageInfo()
 	users, total, err := dao.UserDao.List(offset, limit)
 	if err != nil {
 		response.ServerFailed(c, err.Error())
 	} else {
-		res := reqForm.ResponseInfo(users, total)
+		res := pag.ResponseInfo(users, total)
 		response.SuccessWithData(c, res)
 	}
 }

@@ -6,30 +6,20 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type _Validator struct {
-	Instance *validator.Validate
+func newValidator() *validator.Validate {
+	v := validator.New()
+	v.RegisterValidation("phone", PhoneReg)
+	return validator.New()
 }
 
-func (v *_Validator) Register() {
-	v.Instance.RegisterValidation("phone", ValidatePhone)
-}
-
-func (v *_Validator) StructValidate(s interface{}) string {
-	var tagList []string
-	if errs := v.Instance.Struct(s); errs != nil {
+func ValidateWithSturct(s interface{}) string {
+	v := newValidator()
+	tagList := []string{}
+	if errs := v.Struct(s); errs != nil {
 		for _, err := range errs.(validator.ValidationErrors) {
 			tagList = append(tagList, err.Tag())
 		}
 	}
 	errString := strings.Join(tagList, ",") + "等参数格式有误"
 	return errString
-}
-
-func Validate(s interface{}) string {
-	v := _Validator{
-		Instance: validator.New(),
-	}
-	v.Register()
-	errMsg := v.StructValidate(s)
-	return errMsg
 }

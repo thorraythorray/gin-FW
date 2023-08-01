@@ -6,13 +6,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type msgResponse struct {
-	Msg string
+func ResponseWithMsg(c *gin.Context, s int, msg string) {
+	res := map[string]string{"msg": msg}
+	c.JSON(s, res)
 }
 
-func ResponseWithMsg(c *gin.Context, s int, msg string) {
-	res := msgResponse{Msg: msg}
-	c.JSON(s, res)
+func Success(c *gin.Context) {
+	ResponseWithMsg(c, http.StatusOK, "ok")
+}
+
+func SuccessWithData(c *gin.Context, data interface{}) {
+	res := map[string]interface{}{"data": data}
+	c.JSON(http.StatusOK, res)
 }
 
 func RequestFailed(c *gin.Context, errMsg string) {
@@ -24,30 +29,17 @@ func ServerFailed(c *gin.Context, errMsg string) {
 }
 
 func NotFound(c *gin.Context) {
-	ResponseWithMsg(c, http.StatusNotFound, "目标已存在")
+	ResponseWithMsg(c, http.StatusNotFound, "请求的资源不存在")
 }
 
 func AuthForbidden(c *gin.Context) {
-	ResponseWithMsg(c, http.StatusNotFound, "权限禁止")
+	ResponseWithMsg(c, http.StatusForbidden, "权限禁止")
 }
 
 func UnAuthorized(c *gin.Context) {
-	ResponseWithMsg(c, http.StatusNotFound, "用户不存在")
+	ResponseWithMsg(c, http.StatusUnauthorized, "未经授权，需要身份验证")
 }
 
 func Conflict(c *gin.Context) {
-	ResponseWithMsg(c, http.StatusNotFound, "目标冲突")
-}
-
-func Success(c *gin.Context) {
-	ResponseWithMsg(c, http.StatusOK, "ok")
-}
-
-type dataResponse struct {
-	Data interface{}
-}
-
-func SuccessWithData(c *gin.Context, data interface{}) {
-	res := dataResponse{Data: data}
-	c.JSON(http.StatusOK, res)
+	ResponseWithMsg(c, http.StatusConflict, "资源存在，冲突")
 }
