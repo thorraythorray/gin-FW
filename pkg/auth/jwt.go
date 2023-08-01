@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -10,7 +9,7 @@ import (
 )
 
 type NewJwtClaim struct {
-	User string
+	UserIdtentify string
 	jwt.RegisteredClaims
 }
 
@@ -33,7 +32,7 @@ func (j *JWT) Obtaining(u string) (string, error) {
 	return ss, err
 }
 
-func (j *JWT) Authenticating(s string) (int, error) {
+func (j *JWT) Authenticating(s string) (interface{}, int, error) {
 	token, err := jwt.ParseWithClaims(
 		s,
 		&NewJwtClaim{},
@@ -44,15 +43,14 @@ func (j *JWT) Authenticating(s string) (int, error) {
 
 	if token.Valid {
 		if claims, ok := token.Claims.(*NewJwtClaim); ok && token.Valid {
-			// todo: query in db to validate user
-			fmt.Printf("jwt check user:%s\n", claims.User)
+			return *claims, http.StatusOK, nil
 		}
 	}
 	if errors.Is(err, jwt.ErrTokenMalformed) {
-		return http.StatusBadRequest, errors.New("token解析失败")
+		return nil, http.StatusBadRequest, errors.New("token解析失败")
 	} else if errors.Is(err, jwt.ErrTokenExpired) || errors.Is(err, jwt.ErrTokenNotValidYet) {
-		return http.StatusForbidden, errors.New("无效的token")
+		return nil, http.StatusForbidden, errors.New("无效的token")
 	} else {
-		return http.StatusBadRequest, err
+		return nil, http.StatusBadRequest, err
 	}
 }
