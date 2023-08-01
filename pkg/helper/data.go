@@ -1,6 +1,7 @@
 package helper
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 
@@ -27,7 +28,10 @@ func StructToMap(obj interface{}) map[string]interface{} {
 
 func UuidString() string {
 	newUUID := uuid.New().String()
-	uuidList := strings.Split(newUUID, "-")
-	joinedStr := strings.Join(uuidList, "")
-	return joinedStr
+	newStr := strings.Replace(newUUID, "-", "", -1)
+	return newStr
+}
+
+func ToString(i int) string {
+	return fmt.Sprintf("%d", i)
 }

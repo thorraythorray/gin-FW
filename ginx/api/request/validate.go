@@ -7,7 +7,8 @@ import (
 	"github.com/thorraythorray/go-proj/pkg/validator"
 )
 
-func Validate(c *gin.Context, req interface{}) {
+func Validate(c *gin.Context, req interface{}) bool {
+	ok := true
 	var err error
 	if c.Request.Method == "GET" || c.Request.Method == "HEAD" {
 		err = c.ShouldBindQuery(req)
@@ -16,20 +17,21 @@ func Validate(c *gin.Context, req interface{}) {
 	}
 	if err != nil {
 		response.RequestFailed(c, err.Error())
-		return
+		ok = false
 	}
 	if req != nil {
 		errMsg := validator.ValidateWithSturct(req)
 		if errMsg != "" {
 			response.RequestFailed(c, errMsg)
-			return
+			ok = false
 		}
 		if f, ok := req.(form.FormHandler); ok {
-			err := form.CustomValidate(f)
+			err1 := form.CustomValidate(f)
 			if err != nil {
-				response.RequestFailed(c, err.Error())
-				return
+				response.RequestFailed(c, err1.Error())
+				ok = false
 			}
 		}
 	}
+	return ok
 }

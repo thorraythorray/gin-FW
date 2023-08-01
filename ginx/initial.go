@@ -11,7 +11,7 @@ func InitMoudles(R *gin.Engine) {
 		middleware.CrosMiddleware(),
 		middleware.RecoverMiddleware(),
 		// middleware.LoggerRequestMiddleware(),
-		middleware.JwtAuthMiddleware(),
+		// middleware.JwtAuthMiddleware(),
 	)
 	RouterRegister(R)
 	MakeMigration()

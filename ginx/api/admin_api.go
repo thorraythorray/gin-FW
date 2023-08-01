@@ -21,7 +21,9 @@ type adminApi struct{}
 
 func (u *adminApi) Register(c *gin.Context) {
 	var register form.Register
-	request.Validate(c, &register)
+	if ok := request.Validate(c, &register); !ok {
+		return
+	}
 
 	newUser := model.User{
 		Username: register.Username,
@@ -41,7 +43,9 @@ func (u *adminApi) Register(c *gin.Context) {
 
 func (u *adminApi) Login(c *gin.Context) {
 	var login form.Login
-	request.Validate(c, &login)
+	if ok := request.Validate(c, &login); !ok {
+		return
+	}
 
 	var user model.User
 	isExist := !errors.Is(
@@ -66,15 +70,17 @@ func (u *adminApi) Login(c *gin.Context) {
 }
 
 func (u *adminApi) GetUsers(c *gin.Context) {
-	var pag form.Pagination
-	request.Validate(c, &pag)
+	var page form.Pagination
+	if ok := request.Validate(c, nil); !ok {
+		return
+	}
 
-	offset, limit := pag.PageInfo()
+	offset, limit := page.PageInfo()
 	users, total, err := dao.UserDao.List(offset, limit)
 	if err != nil {
 		response.ServerFailed(c, err.Error())
 	} else {
-		res := pag.ResponseInfo(users, total)
+		res := page.ResponseInfo(users, total)
 		response.SuccessWithData(c, res)
 	}
 }
