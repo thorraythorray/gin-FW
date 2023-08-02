@@ -40,7 +40,9 @@ func (u *adminApi) Register(c *gin.Context) {
 		Status:   uint8(internal.Active),
 		Identity: helper.UuidString(),
 	}
-	err := dao.UserDao.Create(&newUser)
+
+	// 修改user成员内容格式
+	err := global.DB.Create(&newUser).Error
 	if err != nil {
 		response.ServerFailed(c, err)
 	} else {

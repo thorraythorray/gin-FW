@@ -18,7 +18,7 @@ func ValidateWithSturct(s interface{}) string {
 	tagList := []string{}
 	if errs := v.Struct(s); errs != nil {
 		for _, err := range errs.(validator.ValidationErrors) {
-			fmt.Println(err.Error(), err.Param())
+			fmt.Println(err.Error())
 			tagList = append(tagList, strings.ToLower(err.Field()))
 		}
 	}
