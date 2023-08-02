@@ -20,12 +20,12 @@ func SuccessWithData(c *gin.Context, data interface{}) {
 	c.JSON(http.StatusOK, res)
 }
 
-func RequestFailed(c *gin.Context, errMsg string) {
-	ResponseWithMsg(c, http.StatusBadRequest, errMsg)
+func RequestFailed(c *gin.Context, err error) {
+	ResponseWithMsg(c, http.StatusBadRequest, err.Error())
 }
 
-func ServerFailed(c *gin.Context, errMsg string) {
-	ResponseWithMsg(c, http.StatusInternalServerError, errMsg)
+func ServerFailed(c *gin.Context, err error) {
+	ResponseWithMsg(c, http.StatusInternalServerError, err.Error())
 }
 
 func NotFound(c *gin.Context) {

@@ -1,6 +1,7 @@
 package validator
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/go-playground/validator/v10"
@@ -17,9 +18,13 @@ func ValidateWithSturct(s interface{}) string {
 	tagList := []string{}
 	if errs := v.Struct(s); errs != nil {
 		for _, err := range errs.(validator.ValidationErrors) {
+			fmt.Println(err.Error(), err.Param())
 			tagList = append(tagList, strings.ToLower(err.Field()))
 		}
 	}
-	errString := strings.Join(tagList, ",") + "等参数格式有误"
+	var errString string = ""
+	if len(tagList) != 0 {
+		errString = strings.Join(tagList, ",") + "等参数格式有误"
+	}
 	return errString
 }

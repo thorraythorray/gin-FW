@@ -1,9 +1,11 @@
 package request
 
 import (
+	"errors"
+
 	"github.com/gin-gonic/gin"
 	"github.com/thorraythorray/go-proj/ginx/api/response"
-	"github.com/thorraythorray/go-proj/ginx/form"
+	"github.com/thorraythorray/go-proj/ginx/schema"
 	"github.com/thorraythorray/go-proj/pkg/validator"
 )
 
@@ -15,20 +17,20 @@ func Validate(c *gin.Context, req interface{}) bool {
 	} else {
 		err = c.ShouldBindJSON(req)
 	}
-	if err != nil {
-		response.RequestFailed(c, err.Error())
+	if err != nil || req == nil {
+		response.RequestFailed(c, err)
 		ok = false
 	}
 	if req != nil {
 		errMsg := validator.ValidateWithSturct(req)
 		if errMsg != "" {
-			response.RequestFailed(c, errMsg)
+			response.RequestFailed(c, errors.New(errMsg))
 			ok = false
 		}
-		if f, ok := req.(form.FormHandler); ok {
-			err1 := form.CustomValidate(f)
+		if f, ok := req.(schema.SchemaHandler); ok {
+			err1 := schema.CustomValidate(f)
 			if err != nil {
-				response.RequestFailed(c, err1.Error())
+				response.RequestFailed(c, err1)
 				ok = false
 			}
 		}
