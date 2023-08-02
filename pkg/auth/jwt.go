@@ -14,7 +14,7 @@ type NewJwtClaim struct {
 }
 
 type JWT struct {
-	SigningKey interface{}
+	SigningKey string
 	ExpireHour int
 }
 
@@ -28,7 +28,7 @@ func (j *JWT) Obtaining(u string) (string, error) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	ss, err := token.SignedString(j.SigningKey)
+	ss, err := token.SignedString([]byte(j.SigningKey))
 	return ss, err
 }
 

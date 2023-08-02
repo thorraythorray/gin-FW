@@ -2,7 +2,6 @@ package api
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/thorraythorray/go-proj/ginx/api/request"
@@ -68,10 +67,11 @@ func (u *adminApi) Login(c *gin.Context) {
 			SigningKey: internal.JwtSignKey,
 			ExpireHour: internal.JwtExpireHour,
 		}
-		userIdentify := fmt.Sprintf("%d", user.ID)
-		token, err := auth.AuthorizerImpl.Obtain(&jwt, userIdentify)
+		// userIdentify := fmt.Sprintf("%d", user.ID)
+		token, err := auth.AuthorizerImpl.Obtain(&jwt, user.Identity)
+		res := map[string]string{"token": token}
 		if err == nil {
-			response.SuccessWithData(c, token)
+			response.SuccessWithData(c, res)
 		} else {
 			response.ServerFailed(c, err)
 		}

@@ -6,6 +6,6 @@ import (
 )
 
 func RouterRegister(R *gin.Engine) {
-	apiRouter := R.Group("/v1")
+	apiRouter := R.Group("/")
 	router.AdminRouter(apiRouter)
 }
