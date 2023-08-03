@@ -6,12 +6,10 @@ import (
 )
 
 func InitMoudles(R *gin.Engine) {
-	// cros->error->logger->auth
+	// cros->error->logger
 	R.Use(
 		middleware.CrosMiddleware(),
 		middleware.RecoverMiddleware(),
-		// middleware.LoggerRequestMiddleware(),
-		// middleware.JwtAuthMiddleware(),
 	)
 	RouterRegister(R)
 	MakeMigration()

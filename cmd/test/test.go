@@ -1,21 +1,31 @@
 package main
 
 import (
-	"fmt"
+	"log"
+
+	"github.com/casbin/casbin/v2"
 )
 
-type Person struct {
-	Name    string `default:"John Doe"`
-	Age     int    `default:"30"`
-	Country string `default:"USA"`
-}
-
 func main() {
-	p1 := Person{}
-	p2 := Person{
-		Name: "Alice",
+	// 初始化 Casbin Enforcer，使用 RBAC 模型和策略文件
+	enforcer, err := casbin.NewEnforcer("rbac_model.conf", "rbac_policy.csv")
+	if err != nil {
+		log.Fatal("Failed to initialize Casbin Enforcer:", err)
 	}
 
-	fmt.Println("p1:", p1)
-	fmt.Println("p2:", p2)
+	// 添加角色
+	enforcer.AddRoleForUser("alice", "admin")
+
+	// 进行权限检查
+	if enforcer.Enforce("alice", "data1", "read") {
+		log.Println("alice has permission to read data1")
+	} else {
+		log.Println("alice does not have permission to read data1")
+	}
+
+	if enforcer.Enforce("bob", "data1", "read") {
+		log.Println("bob has permission to read data1")
+	} else {
+		log.Println("bob does not have permission to read data1")
+	}
 }
