@@ -18,14 +18,14 @@ func (dao *userDao) Exist(username, phone, email string) bool {
 	)
 }
 
-func (dao *userDao) UpdateByID(id int, opts schema.UserModel) (schema.UserModel, error) {
+func (dao *userDao) UpdateByID(id uint64, opts schema.UserModel) (schema.UserModel, error) {
 	var upUser schema.UserModel
 	global.DB.Find(&upUser, id)
 	err := global.DB.Model(&upUser).Omit("ID").Updates(opts).Error
 	return upUser, err
 }
 
-func (dao *userDao) DeleteByID(id int) error {
+func (dao *userDao) DeleteByID(id uint64) error {
 	return global.DB.Find(&schema.UserModel{}, id).Error
 }
 

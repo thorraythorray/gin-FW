@@ -1,31 +1,41 @@
 package main
 
-import (
-	"log"
+import "fmt"
 
-	"github.com/casbin/casbin/v2"
-)
+type Address struct {
+	City    string
+	Country string
+}
+
+type Person struct {
+	Name    string
+	Age     int
+	Address Address
+}
 
 func main() {
-	// 初始化 Casbin Enforcer，使用 RBAC 模型和策略文件
-	enforcer, err := casbin.NewEnforcer("rbac_model.conf", "rbac_policy.csv")
-	if err != nil {
-		log.Fatal("Failed to initialize Casbin Enforcer:", err)
+	// 定义一个存放 Person 结构体的 slice
+	persons := []Person{
+		{
+			Name: "Alice",
+			Age:  30,
+			Address: Address{
+				City:    "New York",
+				Country: "USA",
+			},
+		},
+		{
+			Name: "Bob",
+			Age:  25,
+			Address: Address{
+				City:    "London",
+				Country: "UK",
+			},
+		},
 	}
 
-	// 添加角色
-	enforcer.AddRoleForUser("alice", "admin")
-
-	// 进行权限检查
-	if enforcer.Enforce("alice", "data1", "read") {
-		log.Println("alice has permission to read data1")
-	} else {
-		log.Println("alice does not have permission to read data1")
-	}
-
-	if enforcer.Enforce("bob", "data1", "read") {
-		log.Println("bob has permission to read data1")
-	} else {
-		log.Println("bob does not have permission to read data1")
+	// 打印 slice 中的每个 Person 结构体
+	for _, p := range persons {
+		fmt.Printf("Name: %s, Age: %d, City: %s, Country: %s\n", p.Name, p.Age, p.Address.City, p.Address.Country)
 	}
 }
