@@ -33,8 +33,9 @@ func (u *adminApi) Register(c *gin.Context) {
 				Username: register.Username,
 				Password: register.Password,
 			},
-			Phone: register.Phone,
-			Email: register.Email,
+			Phone:  register.Phone,
+			Email:  register.Email,
+			RoleID: register.RoleID,
 		},
 		Status:   uint8(internal.Active),
 		Identity: helper.UuidString(),
@@ -68,7 +69,7 @@ func (u *adminApi) Login(c *gin.Context) {
 			ExpireHour: internal.JwtExpireHour,
 		}
 		// userIdentify := fmt.Sprintf("%d", user.ID)
-		token, err := auth.AuthorizerImpl.Obtain(&jwt, user.Identity)
+		token, err := auth.AuthorizerImpl.Obtain(&jwt, user.ID)
 		res := map[string]string{"token": token}
 		if err == nil {
 			response.SuccessWithData(c, res)

@@ -1,11 +1,10 @@
 package ginx
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
-	"github.com/thorraythorray/go-proj/ginx/internal"
 	"github.com/thorraythorray/go-proj/ginx/middleware"
-	"github.com/thorraythorray/go-proj/global"
-	"github.com/thorraythorray/go-proj/pkg/rbac"
 )
 
 func InitMoudles(R *gin.Engine) {
@@ -17,9 +16,14 @@ func InitMoudles(R *gin.Engine) {
 	RouterRegister(R)
 	MakeMigration()
 
-	e := rbac.CasbinImpl(global.DB)
-	for _, v := range internal.DefaultCasbinRules {
-		e.AddPolicies(v.Role, v.CasbinInfos)
+	// e := rbac.CasbinImpl(global.DB)
+	// for _, v := range internal.DefaultCasbinRules {
+	// 	e.AddPolicies(v.Role, v.CasbinInfos)
+	// }
+	// 获取所有的路由信息
+	routes := R.Routes()
+	for _, route := range routes {
+		fmt.Printf("Path: %s, Method: %s\n", route.Path, route.Method)
 	}
 
 }

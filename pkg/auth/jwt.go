@@ -9,7 +9,7 @@ import (
 )
 
 type NewJwtClaim struct {
-	UserIdtentify string
+	UserIdtentify uint64
 	jwt.RegisteredClaims
 }
 
@@ -18,7 +18,7 @@ type JWT struct {
 	ExpireHour int
 }
 
-func (j *JWT) Obtaining(u string) (string, error) {
+func (j *JWT) Obtaining(u uint64) (string, error) {
 	claims := NewJwtClaim{
 		u,
 		jwt.RegisteredClaims{
@@ -43,7 +43,7 @@ func (j *JWT) Authenticating(s string) (interface{}, int, error) {
 
 	if token.Valid {
 		if claims, ok := token.Claims.(*NewJwtClaim); ok && token.Valid {
-			return *claims, http.StatusOK, nil
+			return claims, http.StatusOK, nil
 		}
 	}
 	if errors.Is(err, jwt.ErrTokenMalformed) {

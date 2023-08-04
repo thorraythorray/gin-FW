@@ -59,11 +59,9 @@ func (c *casbinImpl) NewCasbin() *casbin.Enforcer {
 	return NewEnforcer
 }
 
-func (c *casbinImpl) AddPolicy(role string, locals []CasbinSubRule) {
+func (c *casbinImpl) AddPolicy(role, path, method string) {
 	e := c.NewCasbin()
-	for _, v := range locals {
-		e.AddPolicy(role, v.Path, v.Method)
-	}
+	e.AddPolicy(role, path, method)
 }
 
 func (c *casbinImpl) AddPolicies(role string, locals []CasbinSubRule) {

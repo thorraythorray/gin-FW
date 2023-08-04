@@ -11,6 +11,7 @@ func MakeMigration() {
 	err := global.DB.AutoMigrate(
 		// admin models
 		&schema.UserModel{},
+		&schema.RoleModel{},
 	)
 	if err != nil {
 		global.Logger.Errorf("DB migrate err:%s", err.Error())
