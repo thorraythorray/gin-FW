@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 type Address struct {
 	City    string
 	Country string
@@ -35,7 +33,5 @@ func main() {
 	}
 
 	// 打印 slice 中的每个 Person 结构体
-	for _, p := range persons {
-		fmt.Printf("Name: %s, Age: %d, City: %s, Country: %s\n", p.Name, p.Age, p.Address.City, p.Address.Country)
-	}
+
 }

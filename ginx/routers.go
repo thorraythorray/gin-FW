@@ -7,13 +7,13 @@ import (
 )
 
 func RouterRegister(R *gin.Engine) {
-	publicRouterGroup := R.Group("/api")
+	publicRouterGroup := R.Group("/")
 	{
 		router.PublicRouter(publicRouterGroup)
 	}
 
 	privateRouterGroup := publicRouterGroup
-	privateRouterGroup.Use(middleware.JwtAuthMiddleware())
+	privateRouterGroup.Use(middleware.JwtAuthMiddleware(), middleware.CasbinMiddleware())
 	{
 		router.UserRouter(privateRouterGroup)
 	}

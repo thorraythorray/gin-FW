@@ -37,7 +37,7 @@ func (j *JWT) Authenticating(s string) (interface{}, int, error) {
 		s,
 		&NewJwtClaim{},
 		func(token *jwt.Token) (interface{}, error) {
-			return j.SigningKey, nil
+			return []byte(j.SigningKey), nil
 		},
 	)
 

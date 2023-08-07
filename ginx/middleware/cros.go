@@ -1,9 +1,6 @@
 package middleware
 
 import (
-	"errors"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/thorraythorray/go-proj/global"
 )
@@ -18,7 +15,7 @@ func allowCros() gin.HandlerFunc {
 
 		// 放行所有OPTIONS方法
 		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(http.StatusNoContent)
+			panic("Method not allowed")
 		} else {
 			c.Next()
 		}
@@ -28,12 +25,7 @@ func allowCros() gin.HandlerFunc {
 
 func rulesCors() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		mode := global.Config.Cros.Mode
 		whiteList := global.Config.Cros.Whitelist
-		if mode != "rule" || whiteList == nil {
-			c.AbortWithError(http.StatusForbidden, errors.New("IP forbidden"))
-		}
-
 		_checkInWhitelist := func(ori string, wl []string) bool {
 			for _, item := range wl {
 				if ori == item {
@@ -51,7 +43,7 @@ func rulesCors() gin.HandlerFunc {
 			c.Header("Access-Control-Allow-Credentials", "true")
 			c.Next()
 		} else {
-			c.AbortWithStatus(http.StatusForbidden)
+			panic("Cros not allowed")
 		}
 	}
 }

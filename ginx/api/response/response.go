@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ResponseWithMsg(c *gin.Context, s int, msg string) {
-	res := map[string]string{"msg": msg}
+func ResponseWithMsg(c *gin.Context, s int, msg interface{}) {
+	res := map[string]interface{}{"msg": msg}
 	c.JSON(s, res)
 }
 
