@@ -5,7 +5,7 @@ import (
 
 	"github.com/thorraythorray/go-proj/ginx/internal"
 	"github.com/thorraythorray/go-proj/global"
-	"github.com/thorraythorray/go-proj/pkg/auth"
+	"github.com/thorraythorray/go-proj/pkg/admin/auth"
 )
 
 func JwtAuthMiddleware() gin.HandlerFunc {
