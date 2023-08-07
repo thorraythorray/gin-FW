@@ -1,13 +1,13 @@
 package auth
 
 type Authorizer interface {
-	Obtaining(uint64) (string, error)
+	Obtaining(string) (string, error)
 	Authenticating(string) (interface{}, int, error)
 }
 
 type authorizerImpl struct{}
 
-func (auth *authorizerImpl) Obtain(a Authorizer, u uint64) (string, error) {
+func (auth *authorizerImpl) Obtain(a Authorizer, u string) (string, error) {
 	return a.Obtaining(u)
 }
 

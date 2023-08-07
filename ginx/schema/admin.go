@@ -1,5 +1,7 @@
 package schema
 
+import "github.com/thorraythorray/go-proj/pkg/rbac"
+
 // 用户数据结构
 type User struct {
 	Username string `json:"username" binding:"required" validate:"min=6,max=20"`
@@ -53,7 +55,14 @@ func (RoleModel) TableName() string {
 	return "roles"
 }
 
-// 用户认证数据结构
+type NewRole struct {
+	rbac.CasbinRules
+}
+
+/**
+ * @description: middleware用户认证数据结构
+ * @return {*}
+ */
 type AuthorizedUserInfo struct {
 	UserID   uint64 `gorm:"column:user_id"`
 	UserName string `gorm:"column:user_name"`

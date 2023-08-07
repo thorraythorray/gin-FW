@@ -13,7 +13,13 @@ func RecoverMiddleware() gin.HandlerFunc {
 		defer func() {
 			if err := recover(); err != nil {
 				global.Logger.Errorf("Panic:", err)
-				response.ResponseWithMsg(c, http.StatusInternalServerError, err)
+				if e, ok := err.(error); ok {
+					response.ResponseWithMsg(c, http.StatusBadRequest, e.Error())
+				} else if ee, ok := err.(string); ok {
+					response.ResponseWithMsg(c, http.StatusBadRequest, ee)
+				} else {
+					response.ResponseWithMsg(c, http.StatusBadRequest, e)
+				}
 				c.Abort()
 			}
 		}()

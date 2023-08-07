@@ -9,7 +9,7 @@ import (
 )
 
 type NewJwtClaim struct {
-	UserIdtentify uint64
+	UserIdtentify string
 	jwt.RegisteredClaims
 }
 
@@ -18,7 +18,7 @@ type JWT struct {
 	ExpireHour int
 }
 
-func (j *JWT) Obtaining(u uint64) (string, error) {
+func (j *JWT) Obtaining(u string) (string, error) {
 	claims := NewJwtClaim{
 		u,
 		jwt.RegisteredClaims{

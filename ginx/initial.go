@@ -23,7 +23,7 @@ func makeMigrations() {
 	}
 }
 
-func initCasbin(R *gin.Engine) {
+func loadCasbin(R *gin.Engine) {
 	e := rbac.NewCasbin(global.DB)
 
 	// 默认添加用户所有的权限

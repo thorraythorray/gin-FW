@@ -25,8 +25,8 @@ type CasbinRules struct {
 }
 
 type CasbinRole struct {
-	UserID string `json:"user_id" form:"user_id"`
-	Role   string `json:"role" form:"role"`
+	User string `json:"user" form:"user"`
+	Role string `json:"role" form:"role"`
 }
 
 func NewCasbin(db *gorm.DB) *casbin.Enforcer {

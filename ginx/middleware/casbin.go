@@ -2,16 +2,14 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/thorraythorray/go-proj/ginx/api/response"
 	"github.com/thorraythorray/go-proj/global"
 	"github.com/thorraythorray/go-proj/pkg/rbac"
 )
 
 func CasbinMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if global.User == nil {
-			panic("user has no role")
-		}
-		sub := global.User.RoleName
+		sub := global.User
 		obj := c.Request.URL.Path
 		act := c.Request.Method
 		e := rbac.NewCasbin(global.DB) // 判断策略中是否存在
@@ -19,7 +17,8 @@ func CasbinMiddleware() gin.HandlerFunc {
 		if ok {
 			c.Next()
 		} else {
-			panic("Permission Denied")
+			response.AuthForbidden(c)
+			c.Abort()
 		}
 	}
 }
