@@ -96,4 +96,18 @@ func (u *adminApi) GetUsers(c *gin.Context) {
 	}
 }
 
+func (u *adminApi) CreateRole(c *gin.Context) {
+	var role schema.Role
+	if ok := request.Validate(c, &role); !ok {
+		return
+	}
+	var newRole schema.RoleModel
+	err := global.DB.Create(&newRole).Error
+	if err != nil {
+		response.ServerFailed(c, err)
+	} else {
+		response.SuccessWithData(c, newRole)
+	}
+}
+
 var AdminApiImpl = new(adminApi)

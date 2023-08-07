@@ -24,7 +24,7 @@ func makeMigrations() {
 }
 
 func initCasbin(R *gin.Engine) {
-	e := rbac.CasbinImpl(global.DB)
+	e := rbac.NewCasbin(global.DB)
 
 	// 默认添加用户所有的权限
 	routes := R.Routes()
@@ -34,17 +34,18 @@ func initCasbin(R *gin.Engine) {
 
 	// 从固定目录读取权限
 	for _, v := range internal.DefaultCasbinRules {
-		e.AddPolicies(v.Role, v.CasbinInfos)
+		for _, vv := range v.CasbinInfos {
+			e.AddPolicy(v.Role, vv.Path, vv.Method)
+		}
 	}
 }
 
 func InitMoudles(R *gin.Engine) {
+	makeMigrations()
 	// cros->error->logger
 	R.Use(
 		middleware.CrosMiddleware(),
 		middleware.RecoverMiddleware(),
 	)
-	makeMigrations()
-
 	RouterRegister(R)
 }

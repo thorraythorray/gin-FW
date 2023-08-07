@@ -29,11 +29,7 @@ type CasbinRole struct {
 	Role   string `json:"role" form:"role"`
 }
 
-type casbinImpl struct {
-	Adaptor *gorm.DB
-}
-
-func (c *casbinImpl) NewCasbin() *casbin.Enforcer {
+func NewCasbin(db *gorm.DB) *casbin.Enforcer {
 	Once.Do(func() {
 		modelText := `
 			[request_definition]
@@ -52,36 +48,9 @@ func (c *casbinImpl) NewCasbin() *casbin.Enforcer {
 			m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act || r.sub == "admin"
 		`
 		model, _ := model.NewModelFromString(modelText)
-		adapter, _ := gormadapter.NewAdapterByDB(c.Adaptor)
+		adapter, _ := gormadapter.NewAdapterByDB(db)
 		NewEnforcer, _ = casbin.NewEnforcer(model, adapter)
 		NewEnforcer.LoadPolicy()
 	})
 	return NewEnforcer
-}
-
-func (c *casbinImpl) AddPolicy(role, path, method string) {
-	e := c.NewCasbin()
-	e.AddPolicy(role, path, method)
-}
-
-func (c *casbinImpl) AddPolicies(role string, locals []CasbinSubRule) {
-	e := c.NewCasbin()
-	rules := [][]string{}
-	for _, v := range locals {
-		rules = append(rules, []string{role, v.Path, v.Method})
-	}
-	e.AddPolicies(rules)
-}
-
-func (c *casbinImpl) AddRole(user string, roles []string) (bool, error) {
-	e := c.NewCasbin()
-	rules := [][]string{}
-	for _, v := range roles {
-		rules = append(rules, []string{user, v})
-	}
-	return e.AddPolicies(rules)
-}
-
-func CasbinImpl(db *gorm.DB) *casbinImpl {
-	return &casbinImpl{Adaptor: db}
 }
