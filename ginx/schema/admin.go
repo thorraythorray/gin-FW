@@ -1,6 +1,6 @@
 package schema
 
-import "github.com/thorraythorray/go-proj/pkg/rbac"
+import "github.com/thorraythorray/go-proj/pkg/admin/rbac"
 
 // 用户数据结构
 type User struct {

@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/thorraythorray/go-proj/ginx/api/response"
 	"github.com/thorraythorray/go-proj/global"
-	"github.com/thorraythorray/go-proj/pkg/rbac"
+	"github.com/thorraythorray/go-proj/pkg/admin/rbac"
 )
 
 func CasbinMiddleware() gin.HandlerFunc {

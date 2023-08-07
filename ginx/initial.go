@@ -8,7 +8,7 @@ import (
 	"github.com/thorraythorray/go-proj/ginx/middleware"
 	"github.com/thorraythorray/go-proj/ginx/schema"
 	"github.com/thorraythorray/go-proj/global"
-	"github.com/thorraythorray/go-proj/pkg/rbac"
+	"github.com/thorraythorray/go-proj/pkg/admin/rbac"
 )
 
 func makeMigrations() {
