@@ -13,10 +13,11 @@ func CasbinMiddleware() gin.HandlerFunc {
 		obj := c.Request.URL.Path
 		act := c.Request.Method
 		e := rbac.NewCasbin(global.DB) // 判断策略中是否存在
-		ok, _ := e.Enforce(sub, obj, act)
+		ok, err := e.Enforce(sub, obj, act)
 		if ok {
 			c.Next()
 		} else {
+			global.Logger.Errorf(err.Error())
 			response.AuthForbidden(c)
 			c.Abort()
 		}

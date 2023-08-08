@@ -8,4 +8,5 @@ import (
 func UserRouter(r *gin.RouterGroup) {
 	user := r.Group("/")
 	user.GET("/users", api.AdminApiImpl.GetUsers)
+
 }

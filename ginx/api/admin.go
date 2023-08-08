@@ -2,6 +2,8 @@ package api
 
 import (
 	"errors"
+	"fmt"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/thorraythorray/go-proj/ginx/api/request"
@@ -24,24 +26,22 @@ func (u *adminApi) Login(c *gin.Context) {
 	}
 
 	var user schema.UserModel
-	isExist := !errors.Is(
-		global.DB.Where("username = ? AND password = ?", login.Username, login.Password).First(&user).Error,
-		gorm.ErrRecordNotFound,
-	)
-	if !isExist {
-		response.NotFound(c)
+	err := global.DB.Where("username = ? AND password = ?", login.Username, login.Password).First(&user).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		response.AuthForbidden(c)
+		return
+	}
+	jwt := auth.JWT{
+		SigningKey: internal.JwtSignKey,
+		ExpireHour: internal.JwtExpireHour,
+	}
+	fmt.Println(user.ID)
+	token, err := auth.AuthorizerImpl.Obtain(&jwt, strconv.Itoa(int(user.ID)))
+	res := map[string]string{"token": token}
+	if err == nil {
+		response.SuccessWithData(c, res)
 	} else {
-		jwt := auth.JWT{
-			SigningKey: internal.JwtSignKey,
-			ExpireHour: internal.JwtExpireHour,
-		}
-		token, err := auth.AuthorizerImpl.Obtain(&jwt, user.Username)
-		res := map[string]string{"token": token}
-		if err == nil {
-			response.SuccessWithData(c, res)
-		} else {
-			response.ServerFailed(c, err)
-		}
+		response.ServerFailed(c, err)
 	}
 }
 
@@ -77,18 +77,9 @@ func (u *adminApi) Register(c *gin.Context) {
 		response.SuccessWithData(c, newUser)
 	}
 }
-
-func (u *adminApi) CreateRole(c *gin.Context) {
-	var role schema.NewRole
-	if ok := request.Validate(c, &role); !ok {
-		return
-	}
-	notFound := dao.AdminDao.RoleExist(role.Role)
-	if !notFound {
-		response.Conflict(c)
-		return
-	}
-	err := dao.AdminDao.CreateRole(&role)
+func (u *adminApi) DeleteUser(c *gin.Context) {
+	uid, _ := c.Params.Get("id")
+	err := dao.AdminDao.DeleteByID(uid)
 	if err != nil {
 		response.ServerFailed(c, err)
 	} else {
@@ -110,6 +101,24 @@ func (u *adminApi) GetUsers(c *gin.Context) {
 	} else {
 		res := page.ResponseInfo(users, res.RowsAffected)
 		response.SuccessWithData(c, res)
+	}
+}
+
+func (u *adminApi) CreateRole(c *gin.Context) {
+	var role schema.NewRole
+	if ok := request.Validate(c, &role); !ok {
+		return
+	}
+	notFound := dao.AdminDao.RoleExist(role.Role)
+	if !notFound {
+		response.Conflict(c)
+		return
+	}
+	err := dao.AdminDao.CreateRole(&role)
+	if err != nil {
+		response.ServerFailed(c, err)
+	} else {
+		response.Success(c)
 	}
 }
 
