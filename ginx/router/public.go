@@ -10,5 +10,4 @@ func PublicRouter(r *gin.RouterGroup) {
 	public.POST("/login", api.AdminApiImpl.Login)
 	public.POST("/register", api.AdminApiImpl.Register)
 	public.POST("/role", api.AdminApiImpl.CreateRole)
-	public.DELETE("/user/:id", api.AdminApiImpl.DeleteUser)
 }
