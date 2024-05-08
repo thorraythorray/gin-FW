@@ -7,13 +7,16 @@ require (
 	github.com/casbin/gorm-adapter/v3 v3.18.0
 	github.com/flipped-aurora/gin-vue-admin/server v0.0.0-20230802112059-0e780805158c
 	github.com/fsnotify/fsnotify v1.6.0
+	github.com/gillesdemey/go-dicom v0.1.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-playground/validator/v10 v10.14.0
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/uuid v1.3.0
+	github.com/googlecloudplatform/go-dicom-parser v0.0.0-20180727185300-768c9a293032
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/spf13/viper v1.16.0
+	github.com/suyashkumar/dicom v1.0.7
 	go.uber.org/zap v1.21.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/driver/mysql v1.5.1

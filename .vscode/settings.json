@@ -2,13 +2,13 @@
     "go.useLanguageServer": true,
     "[go]": { 
         "editor.formatOnSave": true, 
-        "editor.codeActionsOnSave": { 
-            "source.organizeImports": true, 
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
         },    // Optional: Disable snippets, as they conflict with completion ranking.    "editor.snippetSuggestions": "none", 
     },"[go.mod]": { 
         "editor.formatOnSave": true, 
-        "editor.codeActionsOnSave": { 
-            "source.organizeImports": true, 
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
         },
     },"go.trace.server": "verbose", 
     "gopls": { 
