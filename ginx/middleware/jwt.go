@@ -3,9 +3,9 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 
+	"github.com/thorraythorray/go-Jarvis/admin/auth"
 	"github.com/thorraythorray/go-proj/ginx/internal"
 	"github.com/thorraythorray/go-proj/global"
-	"github.com/thorraythorray/go-proj/pkg/admin/auth"
 )
 
 func JwtAuthMiddleware() gin.HandlerFunc {

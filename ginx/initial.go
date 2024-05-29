@@ -4,11 +4,11 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/thorraythorray/go-Jarvis/admin/rbac"
 	"github.com/thorraythorray/go-proj/ginx/internal"
 	"github.com/thorraythorray/go-proj/ginx/middleware"
 	"github.com/thorraythorray/go-proj/ginx/schema"
 	"github.com/thorraythorray/go-proj/global"
-	"github.com/thorraythorray/go-proj/pkg/admin/rbac"
 )
 
 func makeMigrations() {

@@ -4,9 +4,9 @@ import (
 	"errors"
 
 	"github.com/gin-gonic/gin"
+	"github.com/thorraythorray/go-Jarvis/validator"
 	"github.com/thorraythorray/go-proj/ginx/api/response"
 	"github.com/thorraythorray/go-proj/ginx/schema"
-	"github.com/thorraythorray/go-proj/pkg/validator"
 )
 
 func Validate(c *gin.Context, req interface{}) bool {

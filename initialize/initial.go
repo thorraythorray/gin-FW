@@ -4,8 +4,8 @@ import (
 	"flag"
 	"os"
 
+	"github.com/thorraythorray/go-Jarvis/utils"
 	"github.com/thorraythorray/go-proj/global"
-	"github.com/thorraythorray/go-proj/pkg/helper"
 )
 
 func modeObtain() {
@@ -13,7 +13,7 @@ func modeObtain() {
 	flag.Parse()
 
 	global.Confile = "config." + global.Mode + ".yaml"
-	exist, _ := helper.PathExist(global.Confile)
+	exist, _ := utils.PathExist(global.Confile)
 	if !exist {
 		global.Logger.Errorf("%s config file not exist", global.Confile)
 		os.Exit(0)

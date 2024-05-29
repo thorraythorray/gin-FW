@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"github.com/thorraythorray/go-proj/pkg/admin/rbac"
+	"github.com/thorraythorray/go-Jarvis/admin/rbac"
 )
 
 var DefaultCasbinRules = []rbac.CasbinRules{

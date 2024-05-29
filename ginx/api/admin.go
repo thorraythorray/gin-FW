@@ -6,14 +6,14 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/thorraythorray/go-Jarvis/admin/auth"
+	"github.com/thorraythorray/go-Jarvis/utils"
 	"github.com/thorraythorray/go-proj/ginx/api/request"
 	"github.com/thorraythorray/go-proj/ginx/api/response"
 	"github.com/thorraythorray/go-proj/ginx/dao"
 	"github.com/thorraythorray/go-proj/ginx/internal"
 	"github.com/thorraythorray/go-proj/ginx/schema"
 	"github.com/thorraythorray/go-proj/global"
-	"github.com/thorraythorray/go-proj/pkg/admin/auth"
-	"github.com/thorraythorray/go-proj/pkg/helper"
 	"gorm.io/gorm"
 )
 
@@ -66,7 +66,7 @@ func (u *adminApi) Register(c *gin.Context) {
 			RoleID: register.RoleID,
 		},
 		Status:   uint8(internal.Active),
-		Identity: helper.UuidString(),
+		Identity: utils.UuidString(),
 	}
 
 	// 修改user成员内容格式

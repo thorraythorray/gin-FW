@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	"github.com/thorraythorray/go-proj/pkg/helper"
+	"github.com/thorraythorray/go-Jarvis/utils"
 )
 
 func main() {
-	md5str, _ := helper.GetFileMD5("C:\\Users\\lei\\Downloads\\R-C.jpg")
-	fmt.Println(md5str)
+	a, _ := utils.GetHostname()
+	fmt.Println(a)
 }
